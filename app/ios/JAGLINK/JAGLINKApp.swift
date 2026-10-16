@@ -4,17 +4,17 @@ import SwiftUI
 
 private var jaglinkAboutInfo: LinkDiagnosticAboutInfo {
     LinkDiagnosticAboutInfo(
-        productName: "JAGLINK",
-        subtitle: "JAGUAR · LINK DIAGNOSTICS",
+        productName: "JAGLink",
+        subtitle: "JAGUAR · Link DIAGNOSTICS",
         version: Bundle.main.object(
             forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "Unknown",
         summary: "A C-first, open-source Jaguar diagnostics platform authored by Xavier Wheaton and Shannon Smith.",
         build: "Source / Xcode build",
         authors: ["Xavier Wheaton", "Shannon Smith"],
         copyright: "Copyright © 2026 Xavier Wheaton; © 1993-2026 Shannon Smith",
-        website: URL(string: "https://github.com/Infiltrator-Projects/Jaglink"),
+        website: URL(string: "https://github.com/Infiltrator-Projects/JAGLink"),
         licenseName: "GPL-3.0-or-later",
-        licenseText: "JAGLINK is free software licensed under the GNU General Public License version 3 or, at your option, any later version (GPL-3.0-or-later).\n\nSee LICENSE in the source package for the complete licence text.",
+        licenseText: "JAGLink is free software licensed under the GNU General Public License version 3 or, at your option, any later version (GPL-3.0-or-later).\n\nSee LICENSE in the source package for the complete licence text.",
         credits: [
             "Xavier Wheaton — Author and project contributor",
             "Shannon Smith — Author and project maintainer"
@@ -33,7 +33,7 @@ struct JAGLINKApp: App {
                 .tint(jagLinkTheme.accent)
                 .safeAreaInset(edge: .bottom, spacing: 0) {
                     LinkDiagnosticAboutButton(
-                        productName: "JAGLINK",
+                        productName: "JAGLink",
                         copyright: "© 2026 Xavier Wheaton; © 1993-2026 Shannon Smith") {
                             showingAbout = true
                         }

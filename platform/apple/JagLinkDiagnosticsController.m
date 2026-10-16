@@ -146,7 +146,7 @@ static NSString *JagLinkFormatTrip(
             @"Simulated ELM327 · live standard OBD-II data"
         standardVINStatusText:
             @"Reading standard VIN for Jaguar X400 identification"
-        simulatedAdapterIdentifier:@"ELM327 v2.3 JAGLINK SIM"
+        simulatedAdapterIdentifier:@"ELM327 v2.3 JAGLink SIM"
         simulatedVIN:@"SAJAC51M31XC12345"];
     if (self == nil) return nil;
     link_fuel_economy_init(&_fuelEconomy);
@@ -232,7 +232,7 @@ static NSString *JagLinkFormatTrip(
 {
     [self resetVehicleIdentity];
     [self resetFuelEconomy];
-    [_shared startSimulatedWithAdapterIdentifier:"ELM327 v2.3 JAGLINK SIM"
+    [_shared startSimulatedWithAdapterIdentifier:"ELM327 v2.3 JAGLink SIM"
                                              vin:"SAJAC51M31XC12345"
                                  customResponder:NULL
                                          context:NULL];
@@ -352,7 +352,7 @@ static NSString *JagLinkFormatTrip(
     (LinkDiagnosticsController *)controller
 {
     [controller failWithStatus:
-        @"Unexpected manufacturer extension request in JAGLINK standard flow"];
+        @"Unexpected manufacturer extension request in JAGLink standard flow"];
 }
 
 - (BOOL)instantaneousFuelEconomyAvailable

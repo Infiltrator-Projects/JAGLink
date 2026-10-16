@@ -88,11 +88,11 @@ struct ContentView: View {
         HStack(spacing: 14) {
             JaguarBadge(size: 54)
             VStack(alignment: .leading, spacing: 3) {
-                Text("JAGLINK")
+                Text("JAGLink")
                     .font(.system(size: 29, weight: .bold))
                     .tracking(1.6)
                     .foregroundStyle(JagPalette.ivory)
-                Text("JAGUAR · LINK DIAGNOSTICS")
+                Text("JAGUAR · Link DIAGNOSTICS")
                     .font(.caption2.weight(.bold))
                     .tracking(1.4)
                     .foregroundStyle(JagPalette.warmMetal)
@@ -595,7 +595,7 @@ private struct JagGraphView: View {
                             jagValueRow("Current", parameter.formattedValue, icon: "waveform.path.ecg")
                             jagDivider
                             jagValueRow("History", "\(parameter.history.count) samples", icon: "clock.arrow.circlepath")
-                            Text("The shared LINK telemetry history is retained for time-series presentation.")
+                            Text("The shared Link telemetry history is retained for time-series presentation.")
                                 .font(.caption)
                                 .foregroundStyle(JagPalette.mutedIvory)
                         }
@@ -748,7 +748,7 @@ private struct JagSettingsView: View {
                 LinkLabeledPanel(title: "Application", systemImage: "gearshape.fill") {
                     jagValueRow("Version", version, icon: "number")
                     jagDivider
-                    jagValueRow("Shared engine", "LINK \(model.linkVersionText)", icon: "square.stack.3d.up")
+                    jagValueRow("Shared engine", "Link \(model.linkVersionText)", icon: "square.stack.3d.up")
                     jagDivider
                     jagValueRow("Profile", model.profileDisplayName, icon: "car.side.fill")
                     jagDivider

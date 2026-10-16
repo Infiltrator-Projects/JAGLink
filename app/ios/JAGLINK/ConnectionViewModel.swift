@@ -56,7 +56,7 @@ final class ConnectionViewModel: LinkStandardProductViewModel,
         super.init(
             controller: controller,
             configuration: LinkStandardProductConfiguration(
-                productName: "JAGLINK",
+                productName: "JAGLink",
                 productNamespace: "jaglink",
                 manufacturerName: "Jaguar",
                 vehicleName: "Jaguar vehicle",
@@ -77,7 +77,7 @@ final class ConnectionViewModel: LinkStandardProductViewModel,
         _ profile: inout [AnyHashable: Any],
         vin: String
     ) {
-        // LINK has loaded this VIN's saved name or supplied its VIN-specific
+        // Link has loaded this VIN's saved name or supplied its VIN-specific
         // default. Presentation state may still belong to the previous vehicle.
         profile["platform"] = jaguarController.vehiclePlatformText
         profile["configuration"] = jaguarController.vehicleConfigurationText

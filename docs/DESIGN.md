@@ -2,12 +2,12 @@
 
 ## First-principles position
 
-JAGLINK treats standards, captures, public documentation and mature diagnostic tools as evidence. Product behaviour is implemented from explicit contracts rather than by copying another tool or assuming undocumented manufacturer behaviour.
+JAGLink treats standards, captures, public documentation and mature diagnostic tools as evidence. Product behaviour is implemented from explicit contracts rather than by copying another tool or assuming undocumented manufacturer behaviour.
 
 ## Goals
 
 - keep Jaguar-specific knowledge evidence-backed
-- make the product face thin over LINK rather than forking shared code
+- make the product face thin over Link rather than forking shared code
 - preserve read-only/deny-by-default discovery safety
 - keep dependency identity pinned and reproducible
 
@@ -21,7 +21,7 @@ Read-only and write-capable actions are intentionally distinct. Capability disco
 
 ## Dependency policy
 
-Generic automotive behaviour belongs in LINK; broadly reusable non-automotive mechanics belong in Common; manufacturer-specific behaviour belongs in the product face. Exact dependency revisions are pinned so later upstream changes cannot silently redefine a reviewed product.
+Generic automotive behaviour belongs in Link; broadly reusable non-automotive mechanics belong in Common; manufacturer-specific behaviour belongs in the product face. Exact dependency revisions are pinned so later upstream changes cannot silently redefine a reviewed product.
 
 ## Evidence rule
 

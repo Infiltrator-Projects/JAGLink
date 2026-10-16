@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
-name: JAGLINK CI
+name: JAGLink CI
 
 on:
   push:
@@ -98,17 +98,17 @@ jobs:
           version=$(tr -d '[:space:]' < VERSION)
           out="$RUNNER_TEMP/qualified-core"
           source_root=$(mktemp -d)
-          staging="$source_root/JAGLINK-$version"
+          staging="$source_root/JAGLink-$version"
           trap 'rm -rf "$source_root"' EXIT
           mkdir -p "$out" "$staging"
           git archive HEAD | tar -x -C "$staging"
           export ARCHIVE_ROOT="$staging"
           git submodule foreach --recursive 'mkdir -p "$ARCHIVE_ROOT/$displaypath"; git archive HEAD | tar -x -C "$ARCHIVE_ROOT/$displaypath"'
-          (cd "$source_root" && zip -qry "$out/JAGLINK-$version-source.zip" "JAGLINK-$version")
-          unzip -tq "$out/JAGLINK-$version-source.zip"
+          (cd "$source_root" && zip -qry "$out/JAGLink-$version-source.zip" "JAGLink-$version")
+          unzip -tq "$out/JAGLink-$version-source.zip"
 
           printf '%s\n' "$GITHUB_SHA" > "$out/SOURCE_COMMIT-core"
-          (cd "$out" && sha256sum JAGLINK-* > SHA256SUMS-core)
+          (cd "$out" && sha256sum JAGLink-* > SHA256SUMS-core)
       - if: matrix.os == 'ubuntu-24.04'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
@@ -211,7 +211,7 @@ jobs:
           set -euo pipefail
           log="$RUNNER_TEMP/navigation-stress.log"
           GTK_A11Y=none G_DEBUG=fatal-warnings timeout 40s xvfb-run -a ./build-linux/jaglink --ui-navigation-stress | tee "$log"
-          grep -Fq 'LINK GTK timed navigation stress verified:' "$log"
+          grep -Fq 'Link GTK timed navigation stress verified:' "$log"
           grep -Fq 'sidebar selections while disconnected with main-loop interleaving' "$log"
       - name: Verify deterministic Linux emblem, About and shared diagnostics
         shell: bash
@@ -224,11 +224,11 @@ jobs:
           grep -q 'link_elm327_session_begin' src/link/platform/linux/link-gtk-shell.c
           grep -q 'diagnostic_changed' app/linux/main.c
           if grep -Eq '\.link-(connection-bar|device-row|adapter-combo|toolbar-button|link-button|save-session-button|card|status-chip)[^{]*\{[^}]*((min|max)-(width|height)|padding|border-radius)' app/linux/main.c; then
-            echo 'Shared Linux shell geometry must come from LINK, not JAGLINK CSS.' >&2
+            echo 'Shared Linux shell geometry must come from Link, not JAGLink CSS.' >&2
             exit 1
           fi
           if grep -Fq 'adapter_combo_width' app/linux/main.c src/link/platform/linux/link-gtk-shell.h; then
-            echo 'Adapter-selector width must be LINK-owned.' >&2
+            echo 'Adapter-selector width must be Link-owned.' >&2
             exit 1
           fi
           grep -Fq 'gtk_widget_set_hexpand(shell->device_combo, TRUE);' src/link/platform/linux/link-gtk-shell.c
@@ -251,24 +251,24 @@ jobs:
           dpkg-deb -c "$deb_src" | grep -F './usr/lib/udev/rules.d/60-jaglink-openport2.rules' >/dev/null
           dpkg-deb -c "$deb_src" | grep -F './usr/share/doc/jaglink/copyright' >/dev/null
           dpkg-deb -f "$deb_src" Depends | grep -E '(^|, )libusb-1\.0-0([ (]|,|$)' >/dev/null
-          install -m 0644 "$deb_src" "$RUNNER_TEMP/release/JAGLINK-${VERSION}-linux-amd64.deb"
+          install -m 0644 "$deb_src" "$RUNNER_TEMP/release/JAGLink-${VERSION}-linux-amd64.deb"
           bash scripts/build-linux-run.sh "$RUNNER_TEMP/release"
-          "$RUNNER_TEMP/release/JAGLINK-${VERSION}-linux-native.run" --help >/dev/null
+          "$RUNNER_TEMP/release/JAGLink-${VERSION}-linux-native.run" --help >/dev/null
           native_deb="$RUNNER_TEMP/jaglink_${VERSION}+native1_amd64.deb"
-          "$RUNNER_TEMP/release/JAGLINK-${VERSION}-linux-native.run" --build-only --output "$native_deb"
+          "$RUNNER_TEMP/release/JAGLink-${VERSION}-linux-native.run" --build-only --output "$native_deb"
           test "$(dpkg-deb -f "$native_deb" Package)" = jaglink
           test "$(dpkg-deb -f "$native_deb" Version)" = "${VERSION}+native1"
           dpkg-deb -c "$native_deb" | grep -F './usr/lib/udev/rules.d/60-jaglink-openport2.rules' >/dev/null
           dpkg-deb -f "$native_deb" Depends | grep -E '(^|, )libusb-1\.0-0([ (]|,|$)' >/dev/null
           dpkg --compare-versions "${VERSION}+native1" gt "${VERSION}"
-          test -s "$RUNNER_TEMP/release/JAGLINK-${VERSION}-linux-amd64.deb"
-          test -s "$RUNNER_TEMP/release/JAGLINK-${VERSION}-linux-native.run"
+          test -s "$RUNNER_TEMP/release/JAGLink-${VERSION}-linux-amd64.deb"
+          test -s "$RUNNER_TEMP/release/JAGLink-${VERSION}-linux-native.run"
       - name: Seal qualified Linux packages
         shell: bash
         run: |
           set -euo pipefail
           printf '%s\n' "$GITHUB_SHA" > "$RUNNER_TEMP/release/SOURCE_COMMIT-linux"
-          (cd "$RUNNER_TEMP/release" && sha256sum JAGLINK-* > SHA256SUMS-linux)
+          (cd "$RUNNER_TEMP/release" && sha256sum JAGLink-* > SHA256SUMS-linux)
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: qualified-linux
@@ -278,7 +278,7 @@ jobs:
           retention-days: 30
 
   windows-discover:
-    name: Windows / JAGLINK Discover launch-verified
+    name: Windows / JAGLink Discover launch-verified
     runs-on: windows-2022
     timeout-minutes: 20
     defaults:
@@ -300,7 +300,7 @@ jobs:
         shell: powershell
         run: |
           $icon = 'app/ios/JAGLINK/Assets.xcassets/AppIcon.appiconset/AppIcon-60@3x.png'
-          if (-not (Test-Path $icon)) { throw 'Canonical JAGLINK AppIcon PNG is missing' }
+          if (-not (Test-Path $icon)) { throw 'Canonical JAGLink AppIcon PNG is missing' }
           $ui = 'src/link/platform/windows/link-discover-ui.c'
           foreach ($needle in @('create_main_menu','IDM_HELP_ABOUT','InitCommonControlsEx','LINK_PRODUCT_WEBSITE')) {
             if (-not (Select-String -Path $ui -SimpleMatch $needle -Quiet)) { throw "Missing shared Windows feature: $needle" }
@@ -310,12 +310,12 @@ jobs:
             if (-not (Select-String -Path $about -SimpleMatch $needle -Quiet)) { throw "Missing shared Windows About feature: $needle" }
           }
           if (-not (Test-Path 'src/link/platform/windows/smoke-launch.ps1')) { throw 'Missing launch smoke test' }
-          if (Test-Path 'app/windows/jaglink.ico') { throw 'Independent JAGLINK ICO must not be maintained' }
-          if (Test-Path 'app/windows/jaglink.rc') { throw 'Independent JAGLINK RC must not be maintained' }
+          if (Test-Path 'app/windows/jaglink.ico') { throw 'Independent JAGLink ICO must not be maintained' }
+          if (Test-Path 'app/windows/jaglink.rc') { throw 'Independent JAGLink RC must not be maintained' }
       - name: Configure Win32 build
         shell: powershell
         run: cmake -S . -B build-win32 -A Win32 -DCMAKE_BUILD_TYPE=Release -DJAGLINK_BUILD_WINDOWS_DISCOVER=ON -DBUILD_TESTING=OFF
-      - name: Build JAGLINK Discover
+      - name: Build JAGLink Discover
         shell: powershell
         run: cmake --build build-win32 --config Release --target jaglink-discover --parallel
       - name: Reject dynamic Visual C++ runtime dependencies
@@ -333,7 +333,7 @@ jobs:
       - name: Prove the EXE launches
         shell: powershell
         run: |
-          & 'src/link/platform/windows/smoke-launch.ps1' -Executable 'build-win32/Release/jaglink-discover.exe' -ExpectedTitle 'JAGLINK Discover'
+          & 'src/link/platform/windows/smoke-launch.ps1' -Executable 'build-win32/Release/jaglink-discover.exe' -ExpectedTitle 'JAGLink Discover'
       - name: Verify embedded version metadata and icon
         shell: powershell
         run: |
@@ -348,12 +348,12 @@ jobs:
         shell: powershell
         run: |
           New-Item -ItemType Directory -Force -Path release-assets | Out-Null
-          Copy-Item build-win32/Release/jaglink-discover.exe "release-assets/JAGLINK-${{ steps.version.outputs.version }}-windows-discover.exe"
+          Copy-Item build-win32/Release/jaglink-discover.exe "release-assets/JAGLink-${{ steps.version.outputs.version }}-windows-discover.exe"
       - name: Seal qualified Windows executable
         shell: powershell
         run: |
           $ErrorActionPreference = 'Stop'
-          $name = 'JAGLINK-${{ steps.version.outputs.version }}-windows-discover.exe'
+          $name = 'JAGLink-${{ steps.version.outputs.version }}-windows-discover.exe'
           $hash = (Get-FileHash "release-assets/$name" -Algorithm SHA256).Hash.ToLowerInvariant()
           "$hash  $name" | Set-Content release-assets/SHA256SUMS-windows -Encoding ascii -NoNewline
           $env:GITHUB_SHA | Set-Content release-assets/SOURCE_COMMIT-windows -Encoding ascii -NoNewline
@@ -405,7 +405,7 @@ jobs:
           grep -Fq "#define LINK_VERSION_STRING \"$link_version\"" src/link/include/link/version.h
           link_gitlink="$(git ls-tree HEAD src/link | awk '{print $3}')"
           test -n "$link_gitlink"
-          grep -Fq '.source_id = "Infiltrator-Projects/Jaglink"' src/core/jaglink.c
+          grep -Fq '.source_id = "Infiltrator-Projects/JAGLink"' src/core/jaglink.c
           grep -Fq '#include "../link/platform/apple/LinkPortableCore.c"' src/core/jaglink.c
           grep -Fq 'linkVersionText = productController.linkVersionText' src/link/platform/apple/LinkDiagnosticUI.swift
           ! grep -Fq 'let favourites = values.filter' app/ios/JAGLINK/ContentView.swift
@@ -451,19 +451,19 @@ jobs:
           VERSION: ${{ steps.version.outputs.version }}
         run: |
           set -euo pipefail
-          ipa="dist/JAGLINK-${VERSION}-unsigned.ipa"
+          ipa="dist/JAGLink-${VERSION}-unsigned.ipa"
           test -s "$ipa"
-          cp "$ipa" "$RUNNER_TEMP/JAGLINK-${VERSION}-unsigned.ipa"
-          unzip -tq "$RUNNER_TEMP/JAGLINK-${VERSION}-unsigned.ipa"
+          cp "$ipa" "$RUNNER_TEMP/JAGLink-${VERSION}-unsigned.ipa"
+          unzip -tq "$RUNNER_TEMP/JAGLink-${VERSION}-unsigned.ipa"
       - name: Seal qualified iPhone package
         shell: bash
         run: |
           set -euo pipefail
           out="$RUNNER_TEMP/qualified-iphone"
           mkdir -p "$out"
-          cp "$RUNNER_TEMP/JAGLINK-${{ steps.version.outputs.version }}-unsigned.ipa" "$out/"
+          cp "$RUNNER_TEMP/JAGLink-${{ steps.version.outputs.version }}-unsigned.ipa" "$out/"
           printf '%s\n' "$GITHUB_SHA" > "$out/SOURCE_COMMIT-iphone"
-          (cd "$out" && shasum -a 256 JAGLINK-* > SHA256SUMS-iphone)
+          (cd "$out" && shasum -a 256 JAGLink-* > SHA256SUMS-iphone)
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: qualified-iphone

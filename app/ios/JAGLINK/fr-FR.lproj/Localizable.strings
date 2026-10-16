@@ -56,7 +56,7 @@
 "Close" = "Fermer";
 "Authors" = "Authors";
 "A C-first, open-source Jaguar X-Type X400 diagnostics platform authored by Xavier Wheaton and Shannon Smith." = "A C-first, open-source Jaguar X-Type X400 diagnostics platform authored by Xavier Wheaton and Shannon Smith.";
-"JAGLINK is free software licensed under the GNU General Public License version 3 or, at your option, any later version (GPL-3.0-or-later).\n\nSee LICENSE in the source package for the complete licence text." = "JAGLINK is free software licensed under the GNU General Public License version 3 or, at your option, any later version (GPL-3.0-or-later).\n\nSee LICENSE in the source package for the complete licence text.";
+"JAGLink is free software licensed under the GNU General Public License version 3 or, at your option, any later version (GPL-3.0-or-later).\n\nSee LICENSE in the source package for the complete licence text." = "JAGLink is free software licensed under the GNU General Public License version 3 or, at your option, any later version (GPL-3.0-or-later).\n\nSee LICENSE in the source package for the complete licence text.";
 "Idle" = "Inactif";
 "No adapter" = "Aucun adaptateur";
 "Not scanned" = "Non analysé";
@@ -89,7 +89,7 @@
 "Simulated ELM327 · live standard OBD-II data" = "Simulated ELM327 · live standard OBD-II data";
 "Live standard OBD-II data; X400 manufacturer discovery not yet enabled" = "Live standard OBD-II data; X400 manufacturer discovery not yet enabled";
 "Connected; no supported dashboard PIDs were advertised" = "Connecté ; aucun PID de tableau de bord pris en charge n’a été annoncé";
-"Unexpected manufacturer extension request in JAGLINK standard flow" = "Unexpected manufacturer extension request in JAGLINK standard flow";
+"Unexpected manufacturer extension request in JAGLink standard flow" = "Unexpected manufacturer extension request in JAGLink standard flow";
 "Shared diagnostic flow entered the failed state" = "Shared diagnostic flow entered the failed state";
 "Could not record live telemetry sample" = "Could not record live telemetry sample";
 "Could not append session recording" = "Could not append session recording";

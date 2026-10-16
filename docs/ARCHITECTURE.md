@@ -2,12 +2,12 @@
 
 ## Purpose
 
-JAGLINK is the Jaguar product face over LINK, owning Jaguar-specific identity, X400/vehicle evidence, module discovery and interpretation while reusing the shared diagnostics engine.
+JAGLink is the Jaguar product face over Link, owning Jaguar-specific identity, X400/vehicle evidence, module discovery and interpretation while reusing the shared diagnostics engine.
 
 ## System decomposition
 
 - Jaguar product core/facade
-- LINK shared diagnostics engine
+- Link shared diagnostics engine
 - Linux application
 - native iPhone application
 - Windows Discover path
@@ -15,9 +15,9 @@ JAGLINK is the Jaguar product face over LINK, owning Jaguar-specific identity, X
 
 ## Ownership boundaries
 
-Generic protocol/session/safety/application mechanics belong in LINK. Jaguar VIN interpretation, module identities, endpoints, probes and manufacturer evidence belong in JAGLINK.
+Generic protocol/session/safety/application mechanics belong in Link. Jaguar VIN interpretation, module identities, endpoints, probes and manufacturer evidence belong in JAGLink.
 
-Shared code flows downward through explicit dependencies. Product repositories should not copy shared protocol/session/application logic merely to customise manufacturer content. Conversely, manufacturer-specific evidence must not leak into LINK/Common abstractions.
+Shared code flows downward through explicit dependencies. Product repositories should not copy shared protocol/session/application logic merely to customise manufacturer content. Conversely, manufacturer-specific evidence must not leak into Link/Common abstractions.
 
 ## Contract boundaries
 

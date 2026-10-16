@@ -1,6 +1,6 @@
 [Desktop Entry]
 Type=Application
-Name=JAGLINK
+Name=JAGLink
 Comment=Jaguar X-Type X400 diagnostics
 Exec=jaglink
 Icon=jaglink

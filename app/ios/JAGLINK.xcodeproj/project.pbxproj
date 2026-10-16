@@ -410,7 +410,7 @@
 					"$(SRCROOT)/../../src/link/src/infiltratr-common/include",
 					"$(SRCROOT)/../../platform/apple",
 				);
-				INFOPLIST_KEY_CFBundleDisplayName = JAGLINK;
+				INFOPLIST_KEY_CFBundleDisplayName = JAGLink;
 				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "JAGLINK uses Bluetooth to communicate with your OBD-II diagnostic adapter.";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2026 Xavier Wheaton; © 1993-2026 Shannon Smith";
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -419,7 +419,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.2.88;
+				MARKETING_VERSION = 0.2.89;
 				JAGLINK_SOURCE_REVISION = unavailable;
 				LINK_SOURCE_REVISION = unavailable;
 				ONLY_ACTIVE_ARCH = YES;
@@ -459,7 +459,7 @@
 					"$(SRCROOT)/../../src/link/src/infiltratr-common/include",
 					"$(SRCROOT)/../../platform/apple",
 				);
-				INFOPLIST_KEY_CFBundleDisplayName = JAGLINK;
+				INFOPLIST_KEY_CFBundleDisplayName = JAGLink;
 				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "JAGLINK uses Bluetooth to communicate with your OBD-II diagnostic adapter.";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2026 Xavier Wheaton; © 1993-2026 Shannon Smith";
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -468,7 +468,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.2.88;
+				MARKETING_VERSION = 0.2.89;
 				JAGLINK_SOURCE_REVISION = unavailable;
 				LINK_SOURCE_REVISION = unavailable;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.github.The-First-Infiltrator.Jaglink";

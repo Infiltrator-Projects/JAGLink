@@ -10,7 +10,7 @@ Vehicle diagnostics needs several evidence layers: pure protocol/unit tests, cap
 - .github/workflows/release-policy.yml
 - .github/workflows/ci-status.yml
 
-tests/ exercises Jaguar VIN/product logic plus shared diagnostics integration, ELM327, ISO-TP, UDS, DTC knowledge, evidence, scheduler and LINK facade contracts.
+tests/ exercises Jaguar VIN/product logic plus shared diagnostics integration, ELM327, ISO-TP, UDS, DTC knowledge, evidence, scheduler and Link facade contracts.
 
 ## Physical/manual evidence
 
@@ -28,4 +28,4 @@ The exact source/dependency tree intended for release must pass the required CI 
 
 ## Qualified publication
 
-`VERSION` is release intent. The full JAGLINK CI run qualifies exact source, generic Debian, native installer, Windows and unsigned iPhone artifacts once. The publisher consumes only that successful push-to-main run and verifies source/hash identity and complete draft/public bytes. It never rebuilds. Windows x86 qualification runs on a clean x64 host. Apple builds receive the actual LINK gitlink revision instead of maintaining a second SHA in product C source. Published releases remain immutable.
+`VERSION` is release intent. The full JAGLink CI run qualifies exact source, generic Debian, native installer, Windows and unsigned iPhone artifacts once. The publisher consumes only that successful push-to-main run and verifies source/hash identity and complete draft/public bytes. It never rebuilds. Windows x86 qualification runs on a clean x64 host. Apple builds receive the actual Link gitlink revision instead of maintaining a second SHA in product C source. Published releases remain immutable.

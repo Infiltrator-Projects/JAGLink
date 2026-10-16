@@ -41,11 +41,11 @@ xcodebuild \
 
 app="$derived/Build/Products/Release-iphoneos/JAGLINK.app"
 test -d "$app"
-test -x "$app/JAGLINK"
-/usr/bin/lipo -info "$app/JAGLINK" | grep -q arm64
+test -x "$app/JAGLink"
+/usr/bin/lipo -info "$app/JAGLink" | grep -q arm64
 
 if [[ -z "$out_name" ]]; then
-  out_name="JAGLINK-${version}-unsigned.ipa"
+  out_name="JAGLink-${version}-unsigned.ipa"
 fi
 ipa="$out_dir/$out_name"
 mkdir -p "$package/Payload"

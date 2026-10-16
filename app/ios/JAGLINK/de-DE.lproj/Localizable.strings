@@ -56,7 +56,7 @@
 "Close" = "Schließen";
 "Authors" = "Autoren";
 "A C-first, open-source Jaguar X-Type X400 diagnostics platform authored by Xavier Wheaton and Shannon Smith." = "Eine C-orientierte Open-Source-Diagnoseplattform für den Jaguar X-Type X400 von Xavier Wheaton und Shannon Smith.";
-"JAGLINK is free software licensed under the GNU General Public License version 3 or, at your option, any later version (GPL-3.0-or-later).\n\nSee LICENSE in the source package for the complete licence text." = "JAGLINK ist freie Software unter der GNU General Public License Version 3 oder, nach Ihrer Wahl, jeder späteren Version (GPL-3.0-or-later).\n\nDen vollständigen Lizenztext finden Sie in der Datei LICENSE des Quellpakets.";
+"JAGLink is free software licensed under the GNU General Public License version 3 or, at your option, any later version (GPL-3.0-or-later).\n\nSee LICENSE in the source package for the complete licence text." = "JAGLink ist freie Software unter der GNU General Public License Version 3 oder, nach Ihrer Wahl, jeder späteren Version (GPL-3.0-or-later).\n\nDen vollständigen Lizenztext finden Sie in der Datei LICENSE des Quellpakets.";
 "Idle" = "Inaktiv";
 "No adapter" = "Kein Adapter";
 "Not scanned" = "Nicht gescannt";
@@ -89,7 +89,7 @@
 "Simulated ELM327 · live standard OBD-II data" = "Simulierter ELM327 · Standard-OBD-II-Livedaten";
 "Live standard OBD-II data; X400 manufacturer discovery not yet enabled" = "Standard-OBD-II-Livedaten; X400-Herstellererkennung noch nicht aktiviert";
 "Connected; no supported dashboard PIDs were advertised" = "Verbunden; es wurden keine unterstützten Dashboard-PIDs gemeldet";
-"Unexpected manufacturer extension request in JAGLINK standard flow" = "Unerwartete Herstellererweiterungsanfrage im JAGLINK-Standardablauf";
+"Unexpected manufacturer extension request in JAGLink standard flow" = "Unerwartete Herstellererweiterungsanfrage im JAGLink-Standardablauf";
 "Shared diagnostic flow entered the failed state" = "Gemeinsamer Diagnoseablauf ist in den Fehlerzustand gewechselt";
 "Could not record live telemetry sample" = "Live-Telemetriemesswert konnte nicht aufgezeichnet werden";
 "Could not append session recording" = "Sitzungsaufzeichnung konnte nicht ergänzt werden";

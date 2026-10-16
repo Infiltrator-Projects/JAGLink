@@ -1,14 +1,14 @@
 # Decisions
 
-This file records durable JAGLINK architectural choices.
+This file records durable JAGLink architectural choices.
 
-## ADR-001 — Jaguar-specific code stays above LINK
+## ADR-001 — Jaguar-specific code stays above Link
 
-**Decision.** Generic diagnostics remain in LINK; JAGLINK owns Jaguar-specific identity, module/network knowledge and interpretation.
+**Decision.** Generic diagnostics remain in Link; JAGLink owns Jaguar-specific identity, module/network knowledge and interpretation.
 
 **Rationale.** One shared protocol/safety implementation prevents product divergence.
 
-**Consequence.** Generic improvements should reduce JAGLINK code rather than spawn another local abstraction.
+**Consequence.** Generic improvements should reduce JAGLink code rather than spawn another local abstraction.
 
 ## ADR-002 — X400 evidence is a baseline, not universal Jaguar truth
 
@@ -26,9 +26,9 @@ This file records durable JAGLINK architectural choices.
 
 **Consequence.** Safety tests remain independent from decoder/catalogue tests.
 
-## ADR-004 — Apple diagnostic sessions are shared through LINK
+## ADR-004 — Apple diagnostic sessions are shared through Link
 
-**Decision.** CoreBluetooth/session sequencing lives in LINK with a thin Jaguar adapter.
+**Decision.** CoreBluetooth/session sequencing lives in Link with a thin Jaguar adapter.
 
 **Rationale.** Duplicated Apple session engines previously risked drift from Linux/Windows and other vehicle products.
 

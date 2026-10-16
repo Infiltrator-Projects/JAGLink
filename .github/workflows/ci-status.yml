@@ -1,9 +1,9 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
-name: JAGLINK CI status mirror
+name: JAGLink CI status mirror
 
 on:
   workflow_run:
-    workflows: ["JAGLINK CI"]
+    workflows: ["JAGLink CI"]
     types: [completed]
 
 permissions:
@@ -31,6 +31,6 @@ jobs:
               sha: run.head_sha,
               state,
               target_url: run.html_url,
-              description: `JAGLINK CI run ${run.id}: ${conclusion}`.slice(0, 140),
-              context: 'JAGLINK CI / aggregate'
+              description: `JAGLink CI run ${run.id}: ${conclusion}`.slice(0, 140),
+              context: 'JAGLink CI / aggregate'
             });

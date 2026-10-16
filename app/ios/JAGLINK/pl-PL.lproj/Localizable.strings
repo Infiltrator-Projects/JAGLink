@@ -56,7 +56,7 @@
 "Close" = "Zamknij";
 "Authors" = "Autorzy";
 "A C-first, open-source Jaguar X-Type X400 diagnostics platform authored by Xavier Wheaton and Shannon Smith." = "Otwarta platforma diagnostyczna Jaguar X-Type X400, oparta przede wszystkim na języku C, autorstwa Xaviera Wheatona i Shannona Smitha.";
-"JAGLINK is free software licensed under the GNU General Public License version 3 or, at your option, any later version (GPL-3.0-or-later).\n\nSee LICENSE in the source package for the complete licence text." = "JAGLINK jest wolnym oprogramowaniem na licencji GNU General Public License w wersji 3 lub, według wyboru użytkownika, dowolnej późniejszej wersji (GPL-3.0-or-later).\n\nPełny tekst licencji znajduje się w pliku LICENSE w pakiecie źródłowym.";
+"JAGLink is free software licensed under the GNU General Public License version 3 or, at your option, any later version (GPL-3.0-or-later).\n\nSee LICENSE in the source package for the complete licence text." = "JAGLink jest wolnym oprogramowaniem na licencji GNU General Public License w wersji 3 lub, według wyboru użytkownika, dowolnej późniejszej wersji (GPL-3.0-or-later).\n\nPełny tekst licencji znajduje się w pliku LICENSE w pakiecie źródłowym.";
 "Idle" = "Bezczynny";
 "No adapter" = "Brak adaptera";
 "Not scanned" = "Nie zeskanowano";
@@ -89,7 +89,7 @@
 "Simulated ELM327 · live standard OBD-II data" = "Symulowany ELM327 · standardowe dane OBD-II na żywo";
 "Live standard OBD-II data; X400 manufacturer discovery not yet enabled" = "Standardowe dane OBD-II na żywo; wykrywanie funkcji producenta X400 nie jest jeszcze włączone";
 "Connected; no supported dashboard PIDs were advertised" = "Połączono; pojazd nie zgłosił obsługiwanych identyfikatorów PID dla panelu";
-"Unexpected manufacturer extension request in JAGLINK standard flow" = "Nieoczekiwane żądanie rozszerzenia producenta w standardowym przebiegu JAGLINK";
+"Unexpected manufacturer extension request in JAGLink standard flow" = "Nieoczekiwane żądanie rozszerzenia producenta w standardowym przebiegu JAGLink";
 "Shared diagnostic flow entered the failed state" = "Wspólny przebieg diagnostyczny przeszedł w stan błędu";
 "Could not record live telemetry sample" = "Nie udało się zarejestrować próbki telemetrii na żywo";
 "Could not append session recording" = "Nie udało się dopisać danych do nagrania sesji";

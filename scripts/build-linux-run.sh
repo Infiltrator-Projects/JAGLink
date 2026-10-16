@@ -5,7 +5,7 @@ set -euo pipefail
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 out_dir="${1:-$repo_root/dist}"
 version="$(tr -d '[:space:]' < "$repo_root/VERSION")"
-name="JAGLINK-${version}-linux-native.run"
+name="JAGLink-${version}-linux-native.run"
 mkdir -p "$out_dir"
 work="$(mktemp -d)"
 trap 'rm -rf "$work"' EXIT
@@ -20,7 +20,7 @@ tar \
 
 cat > "$out_dir/$name" <<'STUB'
 #!/usr/bin/env bash
-# Self-extracting JAGLINK native Linux build installer.
+# Self-extracting JAGLink native Linux build installer.
 set -euo pipefail
 
 do_install=1
@@ -33,7 +33,7 @@ while [[ $# -gt 0 ]]; do
       output_path="$2"; shift 2 ;;
     --help|-h)
       echo "Usage: $0 [--build-only|--no-install] [--output FILE]"
-      echo "Build and test JAGLINK locally, create a +native1 Debian package and optionally install it through APT."
+      echo "Build and test JAGLink locally, create a +native1 Debian package and optionally install it through APT."
       exit 0
       ;;
     *) echo "Unknown option: $1" >&2; exit 2 ;;
@@ -113,7 +113,7 @@ if [[ $do_install -eq 0 ]]; then
   fi
   mkdir -p "$(dirname "$output_path")"
   install -m 0644 "$package_path" "$output_path"
-  echo "JAGLINK native Debian package created: $output_path"
+  echo "JAGLink native Debian package created: $output_path"
   exit 0
 fi
 
@@ -136,7 +136,7 @@ installed_version="$(dpkg-query -W -f='${Version}' jaglink 2>/dev/null || true)"
   exit 1
 }
 
-echo "JAGLINK $version was compiled locally, tested, packaged and installed as jaglink $native_version."
+echo "JAGLink $version was compiled locally, tested, packaged and installed as jaglink $native_version."
 echo "APT now owns the native installation and will offer only a genuinely newer release."
 exit 0
 __JAGLINK_ARCHIVE_BELOW__

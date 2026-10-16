@@ -25,15 +25,15 @@ typedef struct JaglinkLiteralTranslation {
 static const char *jaglink_translate_text(const char *text, void *context)
 {
     static const JaglinkLiteralTranslation translations[] = {
-        {"Jaguar-specific topology remains in JAGLINK while the standard transport, fault and live-data engine is shared through LINK.",
-         "Die Jaguar-spezifische Topologie bleibt in JAGLINK, während Standardtransport, Fehler- und Live-Daten-Engine über LINK gemeinsam genutzt werden.",
-         "Topologia specyficzna dla Jaguara pozostaje w JAGLINK, a standardowy transport, obsługa usterek i dane na żywo są współdzielone przez LINK."},
+        {"Jaguar-specific topology remains in JAGLink while the standard transport, fault and live-data engine is shared through Link.",
+         "Die Jaguar-spezifische Topologie bleibt in JAGLink, während Standardtransport, Fehler- und Live-Daten-Engine über Link gemeinsam genutzt werden.",
+         "Topologia specyficzna dla Jaguara pozostaje w JAGLink, a standardowy transport, obsługa usterek i dane na żywo są współdzielone przez Link."},
         {"Jaguar-specific module acquisition remains gated by verified X400 module addresses and safe read-only requests.",
          "Die Jaguar-spezifische Modulerfassung bleibt auf verifizierte X400-Moduladressen und sichere Nur-Lese-Anfragen beschränkt.",
          "Odczyt modułów specyficznych dla Jaguara pozostaje ograniczony do zweryfikowanych adresów modułów X400 i bezpiecznych żądań tylko do odczytu."},
-        {"LINK prefers a verified Jaguar factory value when available, otherwise uses measured SAE PID 0x5E fuel rate with PID 0x0D vehicle speed. Estimates are never presented as measured data.",
-         "LINK bevorzugt einen verifizierten Jaguar-Werkswert; andernfalls werden die gemessene SAE-Kraftstoffrate PID 0x5E und die Fahrzeuggeschwindigkeit PID 0x0D verwendet. Schätzwerte werden nie als Messwerte dargestellt.",
-         "LINK preferuje zweryfikowaną wartość fabryczną Jaguara; w przeciwnym razie używa zmierzonego przepływu paliwa SAE PID 0x5E z prędkością pojazdu PID 0x0D. Wartości szacowane nigdy nie są przedstawiane jako pomiary."},
+        {"Link prefers a verified Jaguar factory value when available, otherwise uses measured SAE PID 0x5E fuel rate with PID 0x0D vehicle speed. Estimates are never presented as measured data.",
+         "Link bevorzugt einen verifizierten Jaguar-Werkswert; andernfalls werden die gemessene SAE-Kraftstoffrate PID 0x5E und die Fahrzeuggeschwindigkeit PID 0x0D verwendet. Schätzwerte werden nie als Messwerte dargestellt.",
+         "Link preferuje zweryfikowaną wartość fabryczną Jaguara; w przeciwnym razie używa zmierzonego przepływu paliwa SAE PID 0x5E z prędkością pojazdu PID 0x0D. Wartości szacowane nigdy nie są przedstawiane jako pomiary."},
         {"Jaguar factory direct", "Jaguar-Werkswert direkt", "Bezpośrednia wartość fabryczna Jaguar"},
         {"Jaguar factory counters", "Jaguar-Werkszähler", "Fabryczne liczniki Jaguar"},
         {"Jaguar factory fuel rate", "Jaguar-Werks-Kraftstoffrate", "Fabryczny przepływ paliwa Jaguar"},
@@ -108,7 +108,7 @@ static const char *connection_text(const JaglinkLinuxContext *context)
 
 static const char *diagnostic_text(const JaglinkLinuxContext *context)
 {
-    if (!context->connected) return "LINK OFFLINE";
+    if (!context->connected) return "Link OFFLINE";
     if (!context->diagnostic_valid) return "STARTING DIAGNOSTICS";
     if (context->diagnostic.stage == LINK_DIAGNOSTIC_FLOW_FAILED) return "DIAGNOSTIC SESSION FAILED";
     if (context->diagnostic_ready) return "LIVE DIAGNOSTICS ACTIVE";
@@ -276,7 +276,7 @@ static void append_vehicle(GtkWidget *body, JaglinkLinuxContext *context)
         link_gtk_card_append_note(
             identity,
             "Some early X400 vehicles may not return SAE Mode 09 PID 02. "
-            "JAGLINK treats that as missing identity evidence, not a diagnostic failure.");
+            "JAGLink treats that as missing identity evidence, not a diagnostic failure.");
     } else {
         link_gtk_card_append_status(
             identity, "WAITING FOR SAE MODE 09 VIN", "state-warning");
@@ -298,13 +298,13 @@ static void append_vehicle(GtkWidget *body, JaglinkLinuxContext *context)
         connection, "Adapter",
         context->connected && context->adapter_identity[0] != '\0'
             ? context->adapter_identity
-            : "Select an adapter above and press LINK UP");
+            : "Select an adapter above and press Link UP");
     link_gtk_card_append_detail(
         connection, "Diagnostic flow", diagnostic_text(context));
     link_gtk_card_append_note(
         connection,
-        "LINK acquires the standard VIN and owns generic OBD-II transport. "
-        "JAGLINK decodes Jaguar's X400-specific market, body, drivetrain, "
+        "Link acquires the standard VIN and owns generic OBD-II transport. "
+        "JAGLink decodes Jaguar's X400-specific market, body, drivetrain, "
         "steering, model-year and Halewood engine-line fields offline.");
 
     gtk_box_append(GTK_BOX(body), identity);
@@ -339,7 +339,7 @@ static void append_modules(GtkWidget *body)
         }
     }
     link_gtk_card_append_note(topology,
-        "Jaguar-specific topology remains in JAGLINK while the standards transport, fault and live-data engine is shared through LINK.");
+        "Jaguar-specific topology remains in JAGLink while the standards transport, fault and live-data engine is shared through Link.");
 
     if (profile == NULL || profile->diagnostic_endpoint_count == 0U) {
         link_gtk_card_append_status(factory, "NO FACTORY ROUTES", "state-warning");
@@ -358,7 +358,7 @@ static void append_modules(GtkWidget *body)
         }
     }
     link_gtk_card_append_note(factory,
-        "These identifiers describe Jaguar's documented factory diagnostic routing. JAGLINK does not assume that a modern UDS payload is valid for X400; the read payload remains disabled until its request format is independently corroborated.");
+        "These identifiers describe Jaguar's documented factory diagnostic routing. JAGLink does not assume that a modern UDS payload is valid for X400; the read payload remains disabled until its request format is independently corroborated.");
 
     gtk_box_append(GTK_BOX(body), topology);
     gtk_box_append(GTK_BOX(body), factory);
@@ -388,7 +388,7 @@ static void append_faults(GtkWidget *body, const JaglinkLinuxContext *context)
     char summary[160];
 
     if (!context->connected) {
-        link_gtk_card_append_status(standard, "NOT SCANNED · LINK OFFLINE", "state-warning");
+        link_gtk_card_append_status(standard, "NOT SCANNED · Link OFFLINE", "state-warning");
     } else if (!context->diagnostic_valid) {
         link_gtk_card_append_status(standard, "STARTING SCAN", "state-warning");
     } else if (context->diagnostic.stage == LINK_DIAGNOSTIC_FLOW_FAILED) {
@@ -409,7 +409,7 @@ static void append_faults(GtkWidget *body, const JaglinkLinuxContext *context)
         link_gtk_card_append_status(standard, summary, "state-warning");
     }
     link_gtk_card_append_note(standard,
-        "These are live standards-based powertrain DTCs from LINK. They are not used as a substitute for Jaguar's factory/module diagnostic view.");
+        "These are live standards-based powertrain DTCs from Link. They are not used as a substitute for Jaguar's factory/module diagnostic view.");
 
     if (profile != NULL && profile->factory_dtc_count != 0U) {
         (void)snprintf(summary, sizeof(summary), "%zu SOURCE-CORROBORATED FACTORY CODE IDENTITIES LOADED",
@@ -521,7 +521,7 @@ static void append_fuel_economy(GtkWidget *body,
         link_gtk_card_append_note(card, factory->provenance);
     }
     link_gtk_card_append_note(card,
-        "LINK prefers a verified Jaguar factory value when available, otherwise uses measured SAE PID 0x5E fuel rate with PID 0x0D vehicle speed. Estimates are never presented as measured data.");
+        "Link prefers a verified Jaguar factory value when available, otherwise uses measured SAE PID 0x5E fuel rate with PID 0x0D vehicle speed. Estimates are never presented as measured data.");
     gtk_box_append(GTK_BOX(body), card);
 }
 
@@ -583,7 +583,7 @@ static void render_section(size_t section, GtkWidget *body, void *opaque)
     case LINK_WORKSPACE_GRAPHS:
         append_generic_status(
             body, "INSTRUMENT TRACES", "Signal history",
-            "Time-series traces receive real LINK telemetry samples from the active Linux diagnostic flow.",
+            "Time-series traces receive real Link telemetry samples from the active Linux diagnostic flow.",
             context);
         break;
     case LINK_WORKSPACE_TESTS:
@@ -605,11 +605,11 @@ static void render_section(size_t section, GtkWidget *body, void *opaque)
             context);
         break;
     case LINK_WORKSPACE_SETTINGS: {
-        GtkWidget *card = link_gtk_card_new("JAGLINK", "System identity");
+        GtkWidget *card = link_gtk_card_new("JAGLink", "System identity");
         link_gtk_card_append_detail(card, "Version", jaglink_version());
         link_gtk_card_append_detail(card, "Product", "Jaguar X-Type X400 diagnostics");
         link_gtk_card_append_detail(card, "Portable core", jaglink_self_check() ? "Validated" : "Invalid metadata");
-        link_gtk_card_append_detail(card, "Linux transport", "LINK native ELM/Bluetooth + Tactrix OpenPort 2.0 USB");
+        link_gtk_card_append_detail(card, "Linux transport", "Link native ELM/Bluetooth + Tactrix OpenPort 2.0 USB");
         link_gtk_card_append_detail(card, "Jaguar factory layer", "X400 routes + module-specific DTC catalogue");
         gtk_box_append(GTK_BOX(body), card);
         break;
@@ -699,7 +699,7 @@ int main(int argc, char **argv)
     about_info.website = project_info->website;
     about_info.license_name = project_info->license_id;
     about_info.license_text =
-        "JAGLINK is free software licensed under the GNU General Public "
+        "JAGLink is free software licensed under the GNU General Public "
         "License version 3 or, at your option, any later version "
         "(GPL-3.0-or-later).\n\n"
         "See LICENSE in the source package for the complete licence text.";
@@ -708,11 +708,11 @@ int main(int argc, char **argv)
         "Shannon Smith — Author and project maintainer";
 
     descriptor.app_id = "com.github.The-First-Infiltrator.Jaglink";
-    descriptor.window_title = "JAGLINK · Jaguar Diagnostics";
-    descriptor.brand_name = "JAGLINK";
-    descriptor.brand_subtitle = "JAGUAR · LINK DIAGNOSTICS";
+    descriptor.window_title = "JAGLink · Jaguar Diagnostics";
+    descriptor.brand_name = "JAGLink";
+    descriptor.brand_subtitle = "JAGUAR · Link DIAGNOSTICS";
     descriptor.version = jaglink_version();
-    descriptor.emblem_resource = "/com/github/Infiltrator-Projects/Jaglink/jaglink-emblem.png";
+    descriptor.emblem_resource = "/com/github/Infiltrator-Projects/JAGLink/jaglink-emblem.png";
     descriptor.css = jaglink_css;
     descriptor.translate_text = jaglink_translate_text;
     descriptor.render_section = render_section;

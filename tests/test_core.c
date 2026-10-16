@@ -109,7 +109,7 @@ int main(void)
     static const uint8_t probe[] = { 'A', 'T', 'I', '\r' };
 
     if (!check(strcmp(jaglink_version(), JAGLINK_TEST_EXPECTED_VERSION) == 0,
-               "linked JAGLINK version does not match build version")) {
+               "linked JAGLink version does not match build version")) {
         passed = false;
     }
     if (!check(jaglink_self_check(), "project identity validation failed")) {
@@ -118,7 +118,7 @@ int main(void)
     if (!check(project_info != NULL &&
                infiltratr_project_info_is_valid(project_info),
                "project info record is invalid") ||
-        !check(strcmp(project_info->program_name, "JAGLINK") == 0,
+        !check(strcmp(project_info->program_name, "JAGLink") == 0,
                "project info program name mismatch") ||
         !check(strcmp(project_info->version, JAGLINK_TEST_EXPECTED_VERSION) == 0,
                "project info version mismatch") ||
@@ -126,7 +126,7 @@ int main(void)
                "project info licence mismatch") ||
         !check(strcmp(project_info->icon_name, "jaglink") == 0,
                "project info icon mismatch") ||
-        !check(strcmp(project_info->source_id, "Infiltrator-Projects/Jaglink") == 0,
+        !check(strcmp(project_info->source_id, "Infiltrator-Projects/JAGLink") == 0,
                "project info source identity mismatch") ||
         !check(strcmp(project_info->build_profile, jaglink_build_profile()) == 0,
                "project info build profile mismatch")) {

@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
-name: JAGLINK Release
+name: JAGLink Release
 on:
   workflow_run:
-    workflows: ["JAGLINK CI"]
+    workflows: ["JAGLink CI"]
     types: [completed]
 permissions:
   contents: read
@@ -62,21 +62,21 @@ jobs:
             (cd release && sha256sum -c "SHA256SUMS-$platform")
           done
           expected=$(printf '%s\n' \
-            "JAGLINK-$version-source.zip" "JAGLINK-$version-linux-amd64.deb" \
-            "JAGLINK-$version-windows-discover.exe" "JAGLINK-$version-unsigned.ipa" \
-            "JAGLINK-$version-linux-native.run" | sort)
+            "JAGLink-$version-source.zip" "JAGLink-$version-linux-amd64.deb" \
+            "JAGLink-$version-windows-discover.exe" "JAGLink-$version-unsigned.ipa" \
+            "JAGLink-$version-linux-native.run" | sort)
           actual=$(find release -maxdepth 1 -type f ! -name 'SOURCE_COMMIT-*' ! -name 'SHA256SUMS-*' -printf '%f\n' | sort)
           test "$actual" = "$expected"
-          test "$(dpkg-deb -f "release/JAGLINK-$version-linux-amd64.deb" Package)" = jaglink
-          test "$(dpkg-deb -f "release/JAGLINK-$version-linux-amd64.deb" Version)" = "$version"
-          unzip -tq "release/JAGLINK-$version-source.zip"
-          unzip -tq "release/JAGLINK-$version-unsigned.ipa"
+          test "$(dpkg-deb -f "release/JAGLink-$version-linux-amd64.deb" Package)" = jaglink
+          test "$(dpkg-deb -f "release/JAGLink-$version-linux-amd64.deb" Version)" = "$version"
+          unzip -tq "release/JAGLink-$version-source.zip"
+          unzip -tq "release/JAGLink-$version-unsigned.ipa"
           rm release/SOURCE_COMMIT-* release/SHA256SUMS-*
-          (cd release && sha256sum JAGLINK-* > SHA256SUMS.txt)
+          (cd release && sha256sum JAGLink-* > SHA256SUMS.txt)
           state=$(gh release view "$tag" --json isDraft,targetCommitish --jq '[.isDraft,.targetCommitish] | @tsv' 2>/dev/null || true)
           if [[ -z "$state" ]]; then
             gh release create "$tag" --target "$EXPECTED_SHA" --draft \
-              --title "JAGLINK $version" \
+              --title "JAGLink $version" \
               --notes "Qualified Linux, Windows and unsigned iPhone artifacts from $EXPECTED_SHA."
             draft=true
           else

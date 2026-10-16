@@ -1,21 +1,21 @@
 <!-- SPDX-License-Identifier: GPL-3.0-or-later -->
 
-# Contributing to JAGLINK
+# Contributing to JAGLink
 
-JAGLINK is the Jaguar product layer over LINK. Preserve the hierarchy **Common → LINK → JAGLINK** and keep product-neutral behaviour out of this repository.
+JAGLink is the Jaguar product layer over Link. Preserve the hierarchy **Common → Link → JAGLink** and keep product-neutral behaviour out of this repository.
 
 ## Ownership rules
 
-- LINK owns transports, OBD, ISO-TP, UDS, diagnostic sequencing, safety/evidence and common application behaviour.
-- Common owns broadly reusable non-automotive primitives beneath LINK.
-- JAGLINK owns Jaguar identity, VIN interpretation, network/module evidence, manufacturer definitions and Jaguar-specific presentation.
+- Link owns transports, OBD, ISO-TP, UDS, diagnostic sequencing, safety/evidence and common application behaviour.
+- Common owns broadly reusable non-automotive primitives beneath Link.
+- JAGLink owns Jaguar identity, VIN interpretation, network/module evidence, manufacturer definitions and Jaguar-specific presentation.
 - Do not create private protocol/session copies in Swift, Objective-C or product C code.
 - Unknown manufacturer identifiers remain experimental until verified.
 - Decode support does not grant transmit permission.
 
 ## Languages and platform boundaries
 
-Use C/C++ for first-party portable/native behaviour where suitable; neither is preferred by policy. Swift and Objective-C are appropriate at Apple UI/CoreBluetooth boundaries. Platform layers should adapt LINK/JAGLINK contracts rather than redefine them.
+Use C/C++ for first-party portable/native behaviour where suitable; neither is preferred by policy. Swift and Objective-C are appropriate at Apple UI/CoreBluetooth boundaries. Platform layers should adapt Link/JAGLink contracts rather than redefine them.
 
 ## Build and test
 

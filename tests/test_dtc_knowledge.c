@@ -70,9 +70,9 @@ int main(void)
           "UDS status meanings");
 
     if (failures != 0) {
-        fprintf(stderr, "%d JAGLINK DTC knowledge test(s) failed\n", failures);
+        fprintf(stderr, "%d JAGLink DTC knowledge test(s) failed\n", failures);
         return 1;
     }
-    puts("JAGLINK shared DTC knowledge tests passed");
+    puts("JAGLink shared DTC knowledge tests passed");
     return 0;
 }

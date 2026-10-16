@@ -44,12 +44,12 @@ include(CTest)
 include(GNUInstallDirs)
 set(JAGLINK_LINK_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src/link")
 if(NOT EXISTS "${JAGLINK_LINK_DIR}/VERSION")
-    message(FATAL_ERROR "LINK is required. Clone with --recurse-submodules or initialise submodules recursively.")
+    message(FATAL_ERROR "Link is required. Clone with --recurse-submodules or initialise submodules recursively.")
 endif()
 file(READ "${JAGLINK_LINK_DIR}/VERSION" JAGLINK_LINK_VERSION)
 string(STRIP "${JAGLINK_LINK_VERSION}" JAGLINK_LINK_VERSION)
 if(NOT JAGLINK_LINK_VERSION MATCHES "^[0-9]+\.[0-9]+\.[0-9]+$")
-    message(FATAL_ERROR "Pinned LINK VERSION is not semantic: ${JAGLINK_LINK_VERSION}")
+    message(FATAL_ERROR "Pinned Link VERSION is not semantic: ${JAGLINK_LINK_VERSION}")
 endif()
 find_program(JAGLINK_GIT_EXECUTABLE git)
 set(JAGLINK_SOURCE_REVISION "")
@@ -71,18 +71,18 @@ if(JAGLINK_GIT_EXECUTABLE)
     if(JAGLINK_LINK_GITLINK_RESULT EQUAL 0 AND JAGLINK_LINK_COMMIT_RESULT EQUAL 0)
         string(REGEX MATCH "^160000 commit ([0-9a-fA-F]+)" JAGLINK_LINK_GITLINK_MATCH "${JAGLINK_LINK_GITLINK}")
         if(NOT JAGLINK_LINK_GITLINK_MATCH)
-            message(FATAL_ERROR "Unable to resolve the LINK gitlink from the JAGLINK commit.")
+            message(FATAL_ERROR "Unable to resolve the Link gitlink from the JAGLink commit.")
         endif()
         set(JAGLINK_LINK_EXPECTED_COMMIT "${CMAKE_MATCH_1}")
         if(NOT JAGLINK_LINK_FOUND_COMMIT STREQUAL JAGLINK_LINK_EXPECTED_COMMIT)
-            message(FATAL_ERROR "LINK checkout does not match the JAGLINK gitlink: expected ${JAGLINK_LINK_EXPECTED_COMMIT}, found ${JAGLINK_LINK_FOUND_COMMIT}.")
+            message(FATAL_ERROR "Link checkout does not match the JAGLink gitlink: expected ${JAGLINK_LINK_EXPECTED_COMMIT}, found ${JAGLINK_LINK_FOUND_COMMIT}.")
         endif()
     endif()
 endif()
 add_subdirectory("${JAGLINK_LINK_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/link" EXCLUDE_FROM_ALL)
-# The shared telemetry recorder is compiled inside LINK::Core for CMake builds.
+# The shared telemetry recorder is compiled inside Link::Core for CMake builds.
 # Give that target the owning product identity so Linux/Windows evidence carries
-# the same JAGLINK version/profile metadata as the direct-source Apple build.
+# the same JAGLink version/profile metadata as the direct-source Apple build.
 if(TARGET link-core)
     target_compile_definitions(link-core PRIVATE
         LINK_TELEMETRY_PRODUCT_VERSION="${PROJECT_VERSION}"
@@ -140,13 +140,13 @@ if(JAGLINK_BUILD_WINDOWS_DISCOVER)
     if(NOT WIN32)
         message(FATAL_ERROR "JAGLINK_BUILD_WINDOWS_DISCOVER is supported on Windows only.")
     endif()
-    link_add_windows_discover(jaglink-discover PRODUCT_NAME "JAGLINK" PRODUCT_SLUG "jaglink" WINDOW_CLASS "JAGLINKDiscoverWindow"
+    link_add_windows_discover(jaglink-discover PRODUCT_NAME "JAGLink" PRODUCT_SLUG "jaglink" WINDOW_CLASS "JAGLINKDiscoverWindow"
         PRODUCT_VERSION "${PROJECT_VERSION}" PRODUCT_COPYRIGHT "Copyright (C) 2026 Xavier Wheaton and Copyright (C) 1993-2026 Shannon Smith"
         PRODUCT_SUBTITLE "Jaguar Diagnostics"
         PRODUCT_DESCRIPTION "A C-first, open-source Jaguar diagnostics platform."
         PRODUCT_AUTHORS "Xavier Wheaton and Shannon Smith"
         PRODUCT_LICENSE_NAME "GPL-3.0-or-later"
-        PRODUCT_WEBSITE "https://github.com/Infiltrator-Projects/Jaglink"
+        PRODUCT_WEBSITE "https://github.com/Infiltrator-Projects/JAGLink"
         PRODUCT_ICON_PNG "${CMAKE_CURRENT_SOURCE_DIR}/app/ios/JAGLINK/Assets.xcassets/AppIcon.appiconset/AppIcon-60@3x.png"
         INVENTORY_VIN_FORMATTER_FUNCTION jaglink_jaguar_vin_format_summary)
     target_link_libraries(jaglink-discover PRIVATE jaglink)
@@ -206,12 +206,12 @@ if(BUILD_TESTING)
     jaglink_add_test(jaglink-test-evidence tests/test_evidence.c)
 endif()
 set(CPACK_PACKAGE_NAME "jaglink")
-set(CPACK_PACKAGE_VENDOR "JAGLINK Project")
-set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Jaguar diagnostics platform using LINK")
+set(CPACK_PACKAGE_VENDOR "JAGLink Project")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Jaguar diagnostics platform using Link")
 set(CPACK_PACKAGE_VERSION "${JAGLINK_PACKAGE_VERSION}")
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
 set(CPACK_DEBIAN_FILE_NAME DEB-DEFAULT)
-set(CPACK_DEBIAN_PACKAGE_MAINTAINER "JAGLINK Project")
+set(CPACK_DEBIAN_PACKAGE_MAINTAINER "JAGLink Project")
 set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
 set(CPACK_DEBIAN_PACKAGE_SECTION "utils")
 include(CPack)

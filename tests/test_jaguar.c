@@ -85,7 +85,7 @@ int main(void)
                     "Jaguar P1647 display title mismatch");
     passed &= check(jaglink_jaguar_x400_obd_dtc_title("P0116") == NULL &&
                     jaglink_jaguar_x400_obd_dtc_title("P0332") == NULL,
-                    "generic SAE DTCs must remain LINK-owned");
+                    "generic SAE DTCs must remain Link-owned");
 
     factory_dtc = jaglink_jaguar_profile_find_factory_dtc(
         profile, JAGLINK_JAGUAR_MODULE_GECM, "U1041");

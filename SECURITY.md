@@ -10,7 +10,7 @@ Security fixes target current `main` and, where appropriate, the latest release.
 
 Do not publish vulnerabilities that could expose users, vehicles, credentials, private data, build infrastructure or signing material.
 
-Use GitHub private vulnerability reporting when available. Otherwise contact `infiltratr@yandex.com` with the subject `JAGLINK security report`.
+Use GitHub private vulnerability reporting when available. Otherwise contact `infiltratr@yandex.com` with the subject `JAGLink security report`.
 
 Include the exact revision/dependency chain, platform, adapter/vehicle context, impact, reproduction and sanitised evidence.
 

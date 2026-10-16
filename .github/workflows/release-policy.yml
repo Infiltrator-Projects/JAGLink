@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
-name: JAGLINK Release Policy
+name: JAGLink Release Policy
 on:
   push:
     branches: [main]
@@ -19,7 +19,7 @@ jobs:
           test ! -e .github/workflows/auto-release.yml
           ! grep -Fq 'head_commit.message' "$ci" "$release"
           ! grep -Fq 'contents: write' "$ci"
-          grep -Fq 'workflows: ["JAGLINK CI"]' "$release"
+          grep -Fq 'workflows: ["JAGLink CI"]' "$release"
           grep -Fq 'github.event.workflow_run.id' "$release"
           if grep -Eq 'cmake --build|xcodebuild |cpack --config' "$release"; then
             echo 'Publication must consume qualified artifacts without rebuilding.' >&2

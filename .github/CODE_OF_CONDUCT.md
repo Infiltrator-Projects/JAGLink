@@ -2,7 +2,7 @@
 
 # Code of Conduct
 
-JAGLINK is an open-source engineering project. Contributors, users and maintainers are expected to keep project spaces professional, constructive and focused on the work.
+JAGLink is an open-source engineering project. Contributors, users and maintainers are expected to keep project spaces professional, constructive and focused on the work.
 
 ## Expected conduct
 
@@ -18,7 +18,7 @@ Automotive diagnostic work can affect real vehicles. Safety concerns, uncertain 
 
 ## Scope
 
-This code applies to repository issues, pull requests, reviews, discussions, project documentation and other spaces operated for JAGLINK. It also applies when someone is representing the project in an official capacity.
+This code applies to repository issues, pull requests, reviews, discussions, project documentation and other spaces operated for JAGLink. It also applies when someone is representing the project in an official capacity.
 
 ## Enforcement
 
