@@ -16,7 +16,7 @@ extern "C" {
 #endif
 
 /*
- * Workspace ownership lives in LINK. These aliases preserve the JAGLINK-facing
+ * Workspace ownership lives in LINK. These aliases preserve the JAGLink-facing
  * source API while every front end consumes the same shared model.
  */
 typedef LinkWorkspaceSection JaglinkWorkspaceSection;

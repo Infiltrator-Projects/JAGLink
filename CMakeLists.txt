@@ -11,7 +11,7 @@ string(STRIP "${JAGLINK_PROJECT_VERSION}" JAGLINK_PROJECT_VERSION)
 if(NOT JAGLINK_PROJECT_VERSION MATCHES "^[0-9]+\.[0-9]+\.[0-9]+$")
     message(FATAL_ERROR "VERSION must contain a semantic major.minor.patch version.")
 endif()
-project(JAGLINK VERSION "${JAGLINK_PROJECT_VERSION}" LANGUAGES C)
+project(JAGLink VERSION "${JAGLINK_PROJECT_VERSION}" LANGUAGES C)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS OFF)
@@ -79,6 +79,7 @@ if(JAGLINK_GIT_EXECUTABLE)
         endif()
     endif()
 endif()
+add_subdirectory(src/libraries "${CMAKE_CURRENT_BINARY_DIR}/libraries" EXCLUDE_FROM_ALL)
 add_subdirectory("${JAGLINK_LINK_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/link" EXCLUDE_FROM_ALL)
 # The shared telemetry recorder is compiled inside Link::Core for CMake builds.
 # Give that target the owning product identity so Linux/Windows evidence carries
@@ -96,14 +97,14 @@ add_library(jaglink STATIC
     src/core/jaglink.c src/core/parameter.c src/core/scheduler.c src/core/telemetry_store.c src/core/telemetry_csv.c
     src/elm327/elm327.c src/elm327/can.c src/elm327/session.c src/elm327/probe.c
     src/obd2/obd2.c src/uds/uds.c src/jaguar/jaguar.c src/jaguar/vin.c)
-add_library(JAGLINK::Core ALIAS jaglink)
+add_library(JAGlink-core ALIAS jaglink)
 target_include_directories(jaglink PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
 target_compile_definitions(jaglink PRIVATE JAGLINK_VERSION="${PROJECT_VERSION}" JAGLINK_BUILD_PROFILE="${JAGLINK_BUILD_PROFILE}")
 if(JAGLINK_SOURCE_REVISION)
     target_compile_definitions(jaglink PRIVATE
         JAGLINK_BUILD_REVISION="${JAGLINK_SOURCE_REVISION}")
 endif()
-target_link_libraries(jaglink PUBLIC LINK::Core)
+target_link_libraries(jaglink PUBLIC link-core)
 set(JAGLINK_WARNING_FLAGS -Wall -Wextra -Wpedantic -Wshadow -Wformat=2 -Wstrict-prototypes -Wmissing-prototypes)
 if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
     target_compile_options(jaglink PRIVATE ${JAGLINK_WARNING_FLAGS} -Werror)
@@ -147,7 +148,7 @@ if(JAGLINK_BUILD_WINDOWS_DISCOVER)
         PRODUCT_AUTHORS "Xavier Wheaton and Shannon Smith"
         PRODUCT_LICENSE_NAME "GPL-3.0-or-later"
         PRODUCT_WEBSITE "https://github.com/Infiltrator-Projects/JAGLink"
-        PRODUCT_ICON_PNG "${CMAKE_CURRENT_SOURCE_DIR}/app/ios/JAGLINK/Assets.xcassets/AppIcon.appiconset/AppIcon-60@3x.png"
+        PRODUCT_ICON_PNG "${CMAKE_CURRENT_SOURCE_DIR}/app/ios/JAGLink/Assets.xcassets/AppIcon.appiconset/AppIcon-60@3x.png"
         INVENTORY_VIN_FORMATTER_FUNCTION jaglink_jaguar_vin_format_summary)
     target_link_libraries(jaglink-discover PRIVATE jaglink)
     if(MSVC)

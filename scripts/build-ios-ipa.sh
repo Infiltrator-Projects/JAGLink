@@ -25,8 +25,8 @@ package="$(mktemp -d "${TMPDIR:-/tmp}/jaglink-payload.XXXXXX")"
 trap 'rm -rf "$derived" "$package"' EXIT
 
 xcodebuild \
-  -project "$repo_root/app/ios/JAGLINK.xcodeproj" \
-  -scheme JAGLINK \
+  -project "$repo_root/app/ios/JAGLink.xcodeproj" \
+  -scheme JAGLink \
   -configuration Release \
   -sdk iphoneos \
   -destination 'generic/platform=iOS' \
@@ -39,7 +39,7 @@ xcodebuild \
   CODE_SIGN_IDENTITY='' \
   build
 
-app="$derived/Build/Products/Release-iphoneos/JAGLINK.app"
+app="$derived/Build/Products/Release-iphoneos/JAGLink.app"
 test -d "$app"
 test -x "$app/JAGLink"
 /usr/bin/lipo -info "$app/JAGLink" | grep -q arm64
@@ -49,7 +49,7 @@ if [[ -z "$out_name" ]]; then
 fi
 ipa="$out_dir/$out_name"
 mkdir -p "$package/Payload"
-/usr/bin/ditto "$app" "$package/Payload/JAGLINK.app"
+/usr/bin/ditto "$app" "$package/Payload/JAGLink.app"
 (
   cd "$package"
   /usr/bin/zip -qry "$ipa" Payload

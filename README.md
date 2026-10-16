@@ -75,7 +75,7 @@ Manufacturer-specific meanings remain evidence-gated until documentation or repr
 
 Portable diagnostic behaviour is C11. C++ is used only where it materially improves a design. Platform-required languages remain narrow presentation/interop edges and must not become alternate protocol implementations.
 
-The Linux shell is C/GTK4 and embeds the canonical Jaguar+OBD emblem as a registered GResource. The iPhone project is `app/ios/JAGLINK.xcodeproj`; SwiftUI remains a presentation edge over the shared portable model.
+The Linux shell is C/GTK4 and embeds the canonical Jaguar+OBD emblem as a registered GResource. The iPhone project is `app/ios/JAGLink.xcodeproj`; SwiftUI remains a presentation edge over the shared portable model.
 
 The native iOS UDS bridge compiles the exact pinned Link core UDS and service-codec implementations. CI verifies that bridge explicitly so a new shared UDS implementation cannot disappear from iOS while remaining present in CMake builds.
 

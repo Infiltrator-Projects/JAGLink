@@ -22,7 +22,7 @@ private var jaglinkAboutInfo: LinkDiagnosticAboutInfo {
 }
 
 @main
-struct JAGLINKApp: App {
+struct JAGLinkApp: App {
     @State private var showingAbout = false
 
     var body: some Scene {

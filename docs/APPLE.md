@@ -2,7 +2,7 @@
 
 # Apple / iPhone target
 
-The JAGLink iPhone project is `app/ios/JAGLINK.xcodeproj`.
+The JAGLink iPhone project is `app/ios/JAGLink.xcodeproj`.
 
 ## Ownership boundary
 
@@ -15,8 +15,8 @@ The SwiftUI application exposes the X400 network profile, generic faults, live O
 Build an unsigned simulator target with:
 
 ```sh
-xcodebuild -project app/ios/JAGLINK.xcodeproj \
-  -scheme JAGLINK \
+xcodebuild -project app/ios/JAGLink.xcodeproj \
+  -scheme JAGLink \
   -configuration Debug \
   -sdk iphonesimulator \
   -destination 'generic/platform=iOS Simulator' \

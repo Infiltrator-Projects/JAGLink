@@ -1,3 +1,7 @@
 [submodule "src/link"]
     path = src/link
     url = https://github.com/Infiltrator-Projects/Link.git
+
+[submodule "src/libraries"]
+    path = src/libraries
+    url = https://github.com/Infiltrator-Projects/Libraries.git
