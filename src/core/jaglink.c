@@ -23,25 +23,13 @@
 #define JAGLINK_BUILD_PROFILE "source"
 #endif
 
-/* Exact LINK revision consumed by the native Apple amalgamation. */
-#define JAGLINK_EMBEDDED_LINK_REVISION \
-    "8e8e83feabe75378d80235ec5a6a72c2ab07cf21"
-
 /*
  * JAGLINK consumes LINK's all-in-one Apple portable-core entry point.
  * Generic LINK implementation ownership stays in LINK; this file supplies
  * only JAGLINK metadata and compatibility wiring.
  */
 #if defined(__APPLE__) && TARGET_OS_IOS
-#ifndef LINK_SOURCE_REVISION
-#define LINK_SOURCE_REVISION JAGLINK_EMBEDDED_LINK_REVISION
-#define JAGLINK_DEFINED_LINK_SOURCE_REVISION 1
-#endif
 #include "../link/platform/apple/LinkPortableCore.c"
-#ifdef JAGLINK_DEFINED_LINK_SOURCE_REVISION
-#undef JAGLINK_DEFINED_LINK_SOURCE_REVISION
-#undef LINK_SOURCE_REVISION
-#endif
 
 #endif
 

@@ -120,13 +120,7 @@ Release notes derive the LINK and Common versions from that exact dependency tre
 
 ## Repository and release policy
 
-This repository uses `main` as its working branch. Development changes are made directly on `main`; the normal project workflow does not depend on PR, feature or release branches.
-
-Every push to `main` runs JAGLINK CI. Ordinary commits do not publish. A commit is release-eligible only when its subject begins with the exact source version as `Release <version>` and every required CI job succeeds.
-
-The release job re-checks that the tested SHA is still the exact current `main`, verifies the complete artifact set, creates the version tag and publishes the atomic release. Existing version tags and published releases are immutable and are never moved, replaced or edited in place.
-
-Manually runnable build/smoke workflows are diagnostic helpers only and are not release-approval mechanisms.
+`main` is the working branch and `VERSION` owns release intent. Complete CI qualifies the exact source and artifact set; publication consumes those bytes without rebuilding. Published tags and assets remain immutable. See [Validation](docs/VALIDATION.md).
 
 ## Engineering rules
 

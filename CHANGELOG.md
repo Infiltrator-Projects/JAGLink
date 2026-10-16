@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.88 — 2026-10-16
+
+- Qualify Windows x86 startup on a clean x64 runner.
+- Publish only source- and hash-bound CI artifacts, with draft/public byte verification and VERSION as release intent.
+- Derive Apple LINK revision identity at build time and remove the obsolete one-shot cancellation workflow.
+
 ## 0.2.87 — 2026-09-24
 
 - Remove JAGLINK's local generic-serif overrides so Linux brand and card titles inherit the shared LINK MB Corpo typography.

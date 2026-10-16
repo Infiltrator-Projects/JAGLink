@@ -1,0 +1,107 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+name: JAGLINK Release
+on:
+  workflow_run:
+    workflows: ["JAGLINK CI"]
+    types: [completed]
+permissions:
+  contents: read
+concurrency:
+  group: publish-${{ github.repository }}
+  cancel-in-progress: false
+jobs:
+  publish:
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'push' &&
+      github.event.workflow_run.head_branch == 'main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Download candidates from the successful CI run
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ github.event.workflow_run.id }}
+          pattern: qualified-*
+          merge-multiple: true
+          path: release
+      - name: Verify and publish the qualified bytes
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EXPECTED_SHA: ${{ github.event.workflow_run.head_sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          version=$(tr -d '[:space:]' < VERSION)
+          [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]
+          tag="v$version"
+          git fetch origin main --tags
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+          if [[ "$(git rev-parse origin/main)" != "$EXPECTED_SHA" ]]; then
+            echo "A newer main superseded this candidate."
+            exit 0
+          fi
+          # VERSION expresses release intent; ordinary changes do not republish
+          # an already released version. A rerun of its original CI is verified.
+          if git rev-parse -q --verify "refs/tags/$tag" >/dev/null &&
+             [[ "$(git rev-parse "refs/tags/$tag^{commit}")" != "$EXPECTED_SHA" ]]; then
+            echo "$tag already identifies an immutable earlier release."
+            exit 0
+          fi
+          for platform in core linux windows iphone; do
+            test "$(cat "release/SOURCE_COMMIT-$platform")" = "$EXPECTED_SHA"
+            (cd release && sha256sum -c "SHA256SUMS-$platform")
+          done
+          expected=$(printf '%s\n' \
+            "JAGLINK-$version-source.zip" "JAGLINK-$version-linux-amd64.deb" \
+            "JAGLINK-$version-windows-discover.exe" "JAGLINK-$version-unsigned.ipa" \
+            "JAGLINK-$version-linux-native.run" | sort)
+          actual=$(find release -maxdepth 1 -type f ! -name 'SOURCE_COMMIT-*' ! -name 'SHA256SUMS-*' -printf '%f\n' | sort)
+          test "$actual" = "$expected"
+          test "$(dpkg-deb -f "release/JAGLINK-$version-linux-amd64.deb" Package)" = jaglink
+          test "$(dpkg-deb -f "release/JAGLINK-$version-linux-amd64.deb" Version)" = "$version"
+          unzip -tq "release/JAGLINK-$version-source.zip"
+          unzip -tq "release/JAGLINK-$version-unsigned.ipa"
+          rm release/SOURCE_COMMIT-* release/SHA256SUMS-*
+          (cd release && sha256sum JAGLINK-* > SHA256SUMS.txt)
+          state=$(gh release view "$tag" --json isDraft,targetCommitish --jq '[.isDraft,.targetCommitish] | @tsv' 2>/dev/null || true)
+          if [[ -z "$state" ]]; then
+            gh release create "$tag" --target "$EXPECTED_SHA" --draft \
+              --title "JAGLINK $version" \
+              --notes "Qualified Linux, Windows and unsigned iPhone artifacts from $EXPECTED_SHA."
+            draft=true
+          else
+            IFS=$'\t' read -r draft target <<<"$state"
+            if [[ "$draft" == true ]]; then
+              test "$target" = "$EXPECTED_SHA"
+            else
+              test "$(git rev-parse "refs/tags/$tag^{commit}")" = "$EXPECTED_SHA"
+            fi
+          fi
+          if [[ "$draft" == true ]]; then
+            gh release upload "$tag" release/* --clobber
+          fi
+          verify_remote() {
+            local destination
+            destination=$(mktemp -d)
+            gh release download "$tag" --dir "$destination"
+            diff -qr release "$destination"
+            rm -rf "$destination"
+          }
+          # A draft can be repaired; public tags and bytes are immutable.
+          verify_remote
+          if [[ "$draft" == true ]]; then
+            gh release edit "$tag" --draft=false --latest
+          fi
+          verify_remote
+          git fetch origin "refs/tags/$tag:refs/tags/$tag"
+          test "$(git rev-parse "refs/tags/$tag^{commit}")" = "$EXPECTED_SHA"

@@ -90,6 +90,33 @@ jobs:
       - run: cmake --build build --config Release --parallel
       - run: ctest --test-dir build --build-config Release --output-on-failure
 
+      - name: Seal qualified core candidate
+        if: matrix.os == 'ubuntu-24.04'
+        shell: bash
+        run: |
+          set -euo pipefail
+          version=$(tr -d '[:space:]' < VERSION)
+          out="$RUNNER_TEMP/qualified-core"
+          source_root=$(mktemp -d)
+          staging="$source_root/JAGLINK-$version"
+          trap 'rm -rf "$source_root"' EXIT
+          mkdir -p "$out" "$staging"
+          git archive HEAD | tar -x -C "$staging"
+          export ARCHIVE_ROOT="$staging"
+          git submodule foreach --recursive 'mkdir -p "$ARCHIVE_ROOT/$displaypath"; git archive HEAD | tar -x -C "$ARCHIVE_ROOT/$displaypath"'
+          (cd "$source_root" && zip -qry "$out/JAGLINK-$version-source.zip" "JAGLINK-$version")
+          unzip -tq "$out/JAGLINK-$version-source.zip"
+
+          printf '%s\n' "$GITHUB_SHA" > "$out/SOURCE_COMMIT-core"
+          (cd "$out" && sha256sum JAGLINK-* > SHA256SUMS-core)
+      - if: matrix.os == 'ubuntu-24.04'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: qualified-core
+          path: ${{ runner.temp }}/qualified-core/*
+          if-no-files-found: error
+          retention-days: 30
+
   sanitizers:
     name: Linux / ASan + UBSan
     runs-on: [self-hosted, Linux, X64, linux-native]
@@ -236,9 +263,15 @@ jobs:
           dpkg --compare-versions "${VERSION}+native1" gt "${VERSION}"
           test -s "$RUNNER_TEMP/release/JAGLINK-${VERSION}-linux-amd64.deb"
           test -s "$RUNNER_TEMP/release/JAGLINK-${VERSION}-linux-native.run"
+      - name: Seal qualified Linux packages
+        shell: bash
+        run: |
+          set -euo pipefail
+          printf '%s\n' "$GITHUB_SHA" > "$RUNNER_TEMP/release/SOURCE_COMMIT-linux"
+          (cd "$RUNNER_TEMP/release" && sha256sum JAGLINK-* > SHA256SUMS-linux)
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: JAGLINK-${{ steps.version.outputs.version }}-linux-packages
+          name: qualified-linux
           path: ${{ runner.temp }}/release/*
           if-no-files-found: error
           compression-level: 0
@@ -246,7 +279,7 @@ jobs:
 
   windows-discover:
     name: Windows / JAGLINK Discover launch-verified
-    runs-on: [self-hosted, Windows, ARM64]
+    runs-on: windows-2022
     timeout-minutes: 20
     defaults:
       run:
@@ -254,27 +287,6 @@ jobs:
     env:
       PSExecutionPolicyPreference: RemoteSigned
     steps:
-      - name: Discover Windows build tools and Git Bash
-        if: runner.os == 'Windows' && runner.environment == 'self-hosted'
-        shell: powershell
-        run: |
-          $git = (Get-Command git.exe -ErrorAction Stop).Source
-          $gitRoot = Split-Path (Split-Path $git -Parent) -Parent
-          $dirs = @((Join-Path $gitRoot 'bin'), (Join-Path $gitRoot 'usr\bin'), (Join-Path $env:ProgramFiles 'CMake\bin'))
-          $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
-          if (Test-Path $vswhere) {
-            $vs = & $vswhere -latest -products '*' -property installationPath
-            if ($vs) { $dirs += Join-Path $vs 'Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin' }
-          }
-          foreach ($dir in $dirs) {
-            if (Test-Path $dir) {
-              $dir | Out-File -FilePath $env:GITHUB_PATH -Append -Encoding utf8
-              $env:PATH = "$dir;$env:PATH"
-            }
-          }
-          Get-ExecutionPolicy -List
-          cmake --version
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           submodules: recursive
@@ -337,10 +349,18 @@ jobs:
         run: |
           New-Item -ItemType Directory -Force -Path release-assets | Out-Null
           Copy-Item build-win32/Release/jaglink-discover.exe "release-assets/JAGLINK-${{ steps.version.outputs.version }}-windows-discover.exe"
+      - name: Seal qualified Windows executable
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $name = 'JAGLINK-${{ steps.version.outputs.version }}-windows-discover.exe'
+          $hash = (Get-FileHash "release-assets/$name" -Algorithm SHA256).Hash.ToLowerInvariant()
+          "$hash  $name" | Set-Content release-assets/SHA256SUMS-windows -Encoding ascii -NoNewline
+          $env:GITHUB_SHA | Set-Content release-assets/SOURCE_COMMIT-windows -Encoding ascii -NoNewline
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: JAGLINK-${{ steps.version.outputs.version }}-windows-discover
-          path: release-assets/JAGLINK-${{ steps.version.outputs.version }}-windows-discover.exe
+          name: qualified-windows
+          path: release-assets/*
           if-no-files-found: error
           compression-level: 0
           retention-days: 30
@@ -383,10 +403,8 @@ jobs:
           grep -q 'didReceiveFlowEvent' src/link/platform/apple/LinkDiagnosticsController.m
           link_version="$(tr -d '[:space:]' < src/link/VERSION)"
           grep -Fq "#define LINK_VERSION_STRING \"$link_version\"" src/link/include/link/version.h
-          grep -Fq '#define JAGLINK_EMBEDDED_LINK_REVISION' src/core/jaglink.c
           link_gitlink="$(git ls-tree HEAD src/link | awk '{print $3}')"
           test -n "$link_gitlink"
-          grep -Fq "\"$link_gitlink\"" src/core/jaglink.c
           grep -Fq '.source_id = "Infiltrator-Projects/Jaglink"' src/core/jaglink.c
           grep -Fq '#include "../link/platform/apple/LinkPortableCore.c"' src/core/jaglink.c
           grep -Fq 'linkVersionText = productController.linkVersionText' src/link/platform/apple/LinkDiagnosticUI.swift
@@ -409,7 +427,7 @@ jobs:
           set -euo pipefail
           xcodebuild -project app/ios/JAGLINK.xcodeproj -scheme JAGLINK -configuration "${{ matrix.configuration }}" \
             -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO \
-            MARKETING_VERSION="$VERSION" JAGLINK_SOURCE_REVISION="$GITHUB_SHA" build
+            MARKETING_VERSION="$VERSION" JAGLINK_SOURCE_REVISION="$GITHUB_SHA" LINK_SOURCE_REVISION="$(git -C src/link rev-parse HEAD)" build
 
   iphone-device-ipa:
     name: iPhone / unsigned device IPA
@@ -437,163 +455,20 @@ jobs:
           test -s "$ipa"
           cp "$ipa" "$RUNNER_TEMP/JAGLINK-${VERSION}-unsigned.ipa"
           unzip -tq "$RUNNER_TEMP/JAGLINK-${VERSION}-unsigned.ipa"
+      - name: Seal qualified iPhone package
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/qualified-iphone"
+          mkdir -p "$out"
+          cp "$RUNNER_TEMP/JAGLINK-${{ steps.version.outputs.version }}-unsigned.ipa" "$out/"
+          printf '%s\n' "$GITHUB_SHA" > "$out/SOURCE_COMMIT-iphone"
+          (cd "$out" && shasum -a 256 JAGLINK-* > SHA256SUMS-iphone)
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: JAGLINK-${{ steps.version.outputs.version }}-unsigned-iphone-ipa
-          path: ${{ runner.temp }}/JAGLINK-${{ steps.version.outputs.version }}-unsigned.ipa
+          name: qualified-iphone
+          path: ${{ runner.temp }}/qualified-iphone/*
           if-no-files-found: error
           compression-level: 0
           retention-days: 30
 
-  release:
-    name: Publish complete atomic release
-    needs: [portable-core, sanitizers, linux-app, windows-discover, apple-ios, iphone-device-ipa]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && startsWith(github.event.head_commit.message, 'Release ')
-    runs-on: ubuntu-24.04
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          fetch-depth: 0
-          submodules: recursive
-      - id: release
-        shell: bash
-        run: |
-          set -euo pipefail
-          version="$(tr -d '[:space:]' < VERSION)"
-          link_version="$(tr -d '[:space:]' < src/link/VERSION)"
-          common_version="$(tr -d '[:space:]' < src/link/src/infiltratr-common/VERSION)"
-          subject="$(git log -1 --format=%s "$GITHUB_SHA")"
-          if [[ "$subject" != "Release ${version}" && "$subject" != "Release ${version}:"* ]]; then
-            echo "Release commit subject must begin with Release ${version}." >&2
-            exit 1
-          fi
-          echo "version=$version" >> "$GITHUB_OUTPUT"
-          echo "tag=v$version" >> "$GITHUB_OUTPUT"
-          echo "link_version=$link_version" >> "$GITHUB_OUTPUT"
-          echo "common_version=$common_version" >> "$GITHUB_OUTPUT"
-      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
-        with:
-          name: JAGLINK-${{ steps.release.outputs.version }}-unsigned-iphone-ipa
-          path: release-assets
-      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
-        with:
-          name: JAGLINK-${{ steps.release.outputs.version }}-linux-packages
-          path: release-assets
-      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
-        with:
-          name: JAGLINK-${{ steps.release.outputs.version }}-windows-discover
-          path: release-assets
-      - name: Package complete recursive source archive
-        shell: bash
-        env:
-          VERSION: ${{ steps.release.outputs.version }}
-        run: |
-          set -euo pipefail
-          staging="$RUNNER_TEMP/JAGLINK-${VERSION}"
-          mkdir -p "$staging" release-assets
-          rsync -a --exclude='.git' --exclude='/release-assets/' ./ "$staging/"
-          test -s "$staging/src/link/src/infiltratr-common/CMakeLists.txt"
-          (cd "$RUNNER_TEMP" && zip -qry "$GITHUB_WORKSPACE/release-assets/JAGLINK-${VERSION}-source.zip" "JAGLINK-${VERSION}")
-          unzip -tq "release-assets/JAGLINK-${VERSION}-source.zip"
-      - name: Verify release artifacts and build checksums
-        shell: bash
-        env:
-          VERSION: ${{ steps.release.outputs.version }}
-        run: |
-          set -euo pipefail
-          for file in \
-            "JAGLINK-${VERSION}-unsigned.ipa" \
-            "JAGLINK-${VERSION}-linux-amd64.deb" \
-            "JAGLINK-${VERSION}-linux-native.run" \
-            "JAGLINK-${VERSION}-windows-discover.exe" \
-            "JAGLINK-${VERSION}-source.zip"; do
-            test -s "release-assets/$file"
-          done
-          (cd release-assets && sha256sum JAGLINK-* > SHA256SUMS.txt)
-      - name: Stage complete draft and publish exact immutable release
-        shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
-          TAG: ${{ steps.release.outputs.tag }}
-          VERSION: ${{ steps.release.outputs.version }}
-          LINK_VERSION: ${{ steps.release.outputs.link_version }}
-          COMMON_VERSION: ${{ steps.release.outputs.common_version }}
-        run: |
-          set -euo pipefail
-          git fetch origin main --tags
-          test "$GITHUB_SHA" = "$(git rev-parse origin/main)"
-          expected_assets="$(printf '%s\n' \
-            "JAGLINK-${VERSION}-unsigned.ipa" \
-            "JAGLINK-${VERSION}-linux-amd64.deb" \
-            "JAGLINK-${VERSION}-linux-native.run" \
-            "JAGLINK-${VERSION}-windows-discover.exe" \
-            "JAGLINK-${VERSION}-source.zip" \
-            "SHA256SUMS.txt" | sort)"
-
-          if git rev-parse -q --verify "refs/tags/$TAG" >/dev/null; then
-            tag_commit="$(git rev-list -n 1 "$TAG")"
-            if [[ "$tag_commit" != "$GITHUB_SHA" ]]; then
-              echo "Release tag $TAG points to $tag_commit instead of $GITHUB_SHA." >&2
-              exit 1
-            fi
-            echo "Resuming exact existing tag $TAG at $GITHUB_SHA."
-          fi
-
-          release_state="$(gh release view "$TAG" \
-            --json isDraft,targetCommitish --jq '[.isDraft, .targetCommitish] | @tsv' \
-            2>/dev/null || true)"
-          if [[ -n "$release_state" ]]; then
-            IFS=$'\t' read -r is_draft target_commitish <<<"$release_state"
-            if [[ "$target_commitish" != "$GITHUB_SHA" ]]; then
-              echo "Release $TAG targets $target_commitish instead of $GITHUB_SHA." >&2
-              exit 1
-            fi
-            if [[ "$is_draft" == "false" ]]; then
-              published_assets="$(gh release view "$TAG" --json assets --jq '.assets[].name' | sort)"
-              if [[ "$published_assets" != "$expected_assets" ]]; then
-                echo "Release $TAG has an unexpected asset set." >&2
-                exit 1
-              fi
-              verify_dir="$(mktemp -d)"
-              gh release download "$TAG" --dir "$verify_dir"
-              for expected in \
-                "JAGLINK-${VERSION}-unsigned.ipa" \
-                "JAGLINK-${VERSION}-linux-amd64.deb" \
-                "JAGLINK-${VERSION}-linux-native.run" \
-                "JAGLINK-${VERSION}-windows-discover.exe" \
-                "JAGLINK-${VERSION}-source.zip" \
-                "SHA256SUMS.txt"; do
-                cmp -s "release-assets/$expected" "$verify_dir/$expected" || {
-                  echo "Published asset $expected differs from the verified rebuild." >&2
-                  exit 1
-                }
-              done
-              echo "Resuming exact existing immutable release $TAG."
-            else
-              gh release upload "$TAG" release-assets/* --clobber
-              gh release edit "$TAG" --draft=false
-            fi
-          else
-            gh release create "$TAG" --target "$GITHUB_SHA" --draft \
-              --title "JAGLINK $VERSION" \
-              --notes "JAGLINK $VERSION: complete launch-verified release on LINK $LINK_VERSION and Infiltratr Common $COMMON_VERSION, with the shared C11 diagnostic-flow controller, OBD-II/UDS/CAN-FD engines, deterministic Linux branding, static Windows runtime and shared Windows Discover shell."
-            gh release upload "$TAG" release-assets/* --clobber
-            gh release edit "$TAG" --draft=false
-          fi
-
-          published_assets="$(gh release view "$TAG" --json assets --jq '.assets[].name' | sort)"
-          if [[ "$published_assets" != "$expected_assets" ]]; then
-            echo "Release $TAG has an unexpected asset set." >&2
-            exit 1
-          fi
-          git fetch origin "refs/tags/$TAG:refs/tags/$TAG"
-          test "$(git rev-parse "refs/tags/$TAG^{commit}")" = "$GITHUB_SHA"
-
-      - name: Record pull-based APT publication
-        shell: bash
-        run: |
-          set -euo pipefail
-          echo "Central APT publication is pull-based."
-          echo "Infiltrator-Repository will discover this immutable GitHub release on its own schedule."

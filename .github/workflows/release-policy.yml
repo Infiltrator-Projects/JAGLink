@@ -1,43 +1,27 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 name: JAGLINK Release Policy
-
 on:
   push:
     branches: [main]
-
 permissions:
   contents: read
-
 jobs:
   release-policy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - name: Enforce main-only automatic immutable publishing
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - name: Enforce qualification and publication ownership
         shell: bash
         run: |
           set -euo pipefail
-          test ! -e .github/workflows/auto-release.yml
           ci=.github/workflows/ci.yml
-          grep -Fq "if: github.event_name == 'push' && github.ref == 'refs/heads/main' && startsWith(github.event.head_commit.message, 'Release ')" "$ci"
-          grep -Fq 'git fetch origin main --tags' "$ci"
-          grep -Fq 'test "$GITHUB_SHA" = "$(git rev-parse origin/main)"' "$ci"
-          grep -Fq 'Resuming exact existing tag $TAG at $GITHUB_SHA.' "$ci"
-          grep -Fq 'Release tag $TAG points to $tag_commit instead of $GITHUB_SHA.' "$ci"
-          grep -Fq 'Resuming exact existing immutable release $TAG.' "$ci"
-          grep -Fq 'Published asset $expected differs from the verified rebuild.' "$ci"
-          grep -Fq 'gh release create "$TAG" --target "$GITHUB_SHA" --draft' "$ci"
-          grep -Fq 'gh release upload "$TAG" release-assets/* --clobber' "$ci"
-          grep -Fq 'gh release edit "$TAG" --draft=false' "$ci"
-          if grep -Fq 'git push origin "$TAG"' "$ci"; then
-            echo 'JAGLINK must not expose an immutable tag before every asset is verified.' >&2
-            exit 1
-          fi
-          if grep -Eq '^  pull_request:|^  merge_group:' "$ci"; then
-            echo 'JAGLINK CI must use main only; PR/merge branches are forbidden.' >&2
-            exit 1
-          fi
-          if grep -Fq "if: github.event_name == 'workflow_dispatch'" "$ci"; then
-            echo 'JAGLINK publication must never require manual approval.' >&2
+          release=.github/workflows/release.yml
+          test ! -e .github/workflows/auto-release.yml
+          ! grep -Fq 'head_commit.message' "$ci" "$release"
+          ! grep -Fq 'contents: write' "$ci"
+          grep -Fq 'workflows: ["JAGLINK CI"]' "$release"
+          grep -Fq 'github.event.workflow_run.id' "$release"
+          if grep -Eq 'cmake --build|xcodebuild |cpack --config' "$release"; then
+            echo 'Publication must consume qualified artifacts without rebuilding.' >&2
             exit 1
           fi

@@ -25,3 +25,7 @@ Regression coverage must ensure that adding a codec, DID, module or transport ca
 ## Release criterion
 
 The exact source/dependency tree intended for release must pass the required CI gates. Release notes and documentation must reflect the evidence actually held for that revision.
+
+## Qualified publication
+
+`VERSION` is release intent. The full JAGLINK CI run qualifies exact source, generic Debian, native installer, Windows and unsigned iPhone artifacts once. The publisher consumes only that successful push-to-main run and verifies source/hash identity and complete draft/public bytes. It never rebuilds. Windows x86 qualification runs on a clean x64 host. Apple builds receive the actual LINK gitlink revision instead of maintaining a second SHA in product C source. Published releases remain immutable.
