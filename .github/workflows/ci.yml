@@ -27,7 +27,7 @@ jobs:
         run: |
           set -euo pipefail
           gitlinks="$(git ls-files --stage | awk '$1 == "160000" { print $4 }' | sort)"
-          test "$gitlinks" = "src/link"
+          test "$gitlinks" = "$(printf 'src/libraries\nsrc/link')"
           test ! -e src/infiltratr-common
           status="$(git submodule status --recursive)"
           if grep -Eq '^[+-U]' <<<"$status"; then
@@ -35,6 +35,7 @@ jobs:
             echo 'Recursive submodule checkout does not match the committed gitlinks.' >&2
             exit 1
           fi
+          test -f src/libraries/VERSION
           test -f src/link/VERSION
           test -f src/link/src/infiltratr-common/VERSION
           grep -q 'src/uds/uds_services.c' src/link/CMakeLists.txt

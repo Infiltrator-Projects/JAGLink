@@ -97,7 +97,7 @@ add_library(jaglink STATIC
     src/core/jaglink.c src/core/parameter.c src/core/scheduler.c src/core/telemetry_store.c src/core/telemetry_csv.c
     src/elm327/elm327.c src/elm327/can.c src/elm327/session.c src/elm327/probe.c
     src/obd2/obd2.c src/uds/uds.c src/jaguar/jaguar.c src/jaguar/vin.c)
-add_library(JAGlink-core ALIAS jaglink)
+add_library(JAGLink::Core ALIAS jaglink)
 target_include_directories(jaglink PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
 target_compile_definitions(jaglink PRIVATE JAGLINK_VERSION="${PROJECT_VERSION}" JAGLINK_BUILD_PROFILE="${JAGLINK_BUILD_PROFILE}")
 if(JAGLINK_SOURCE_REVISION)
