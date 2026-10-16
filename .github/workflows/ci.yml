@@ -211,7 +211,7 @@ jobs:
           set -euo pipefail
           log="$RUNNER_TEMP/navigation-stress.log"
           GTK_A11Y=none G_DEBUG=fatal-warnings timeout 40s xvfb-run -a ./build-linux/jaglink --ui-navigation-stress | tee "$log"
-          grep -Fq 'Link GTK timed navigation stress verified:' "$log"
+          grep -Fq 'GTK timed navigation stress verified:' "$log"
           grep -Fq 'sidebar selections while disconnected with main-loop interleaving' "$log"
       - name: Verify deterministic Linux emblem, About and shared diagnostics
         shell: bash
