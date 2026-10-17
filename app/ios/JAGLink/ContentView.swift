@@ -546,13 +546,6 @@ private struct JagTableView: View {
                                 }
                                 Spacer()
                                 Button {
-                                    model.toggleFavourite(stableKey: parameter.id)
-                                } label: {
-                                    Image(systemName: parameter.favourite ? "star.fill" : "star")
-                                }
-                                .buttonStyle(.plain)
-                                .foregroundStyle(JagPalette.warmMetal)
-                                Button {
                                     model.togglePolling(parameter)
                                 } label: {
                                     Image(systemName: parameter.pollingEnabled ? "waveform.path.ecg" : "pause.circle")

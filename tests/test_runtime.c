@@ -164,7 +164,6 @@ static int test_telemetry(void)
 {
     JaglinkTelemetryStore store;
     jaglink_telemetry_store_init(&store);
-    jaglink_telemetry_store_set_favourite(&store, 0x0cU, true);
 
     for (size_t index = 0U;
          index < JAGLINK_TELEMETRY_HISTORY_CAPACITY + 3U;
@@ -191,8 +190,6 @@ static int test_telemetry(void)
     JaglinkTelemetrySample latest;
     CHECK(jaglink_telemetry_store_latest(&store, 0x0cU, &latest));
     CHECK(latest.measurement.pid == 0x0cU);
-    CHECK(jaglink_telemetry_store_is_favourite(&store, 0x0cU));
-    CHECK(!jaglink_telemetry_store_is_favourite(&store, 0x05U));
 
     JaglinkElm327Response response = {
         .result = JAGLINK_ELM327_RESULT_OK,
@@ -215,7 +212,7 @@ static int test_telemetry(void)
     TextBuffer output = { { 0 }, 0U };
     CHECK(jaglink_telemetry_export_csv(
               &store, &metadata, text_sink, &output));
-    CHECK(strstr(output.data, "# jaglink_csv_version,1\n") != NULL);
+    CHECK(strstr(output.data, "# jaglink_csv_version,2\n") != NULL);
 #ifdef TEST_EXPECTED_PRODUCT_REVISION
     CHECK(strstr(output.data, "# jaglink_build_revision,\"" TEST_EXPECTED_PRODUCT_REVISION "\"\n") != NULL);
 #endif
@@ -233,7 +230,7 @@ static int test_telemetry(void)
     CHECK(strstr(output.data,
                  "# adapter_identifier,\"ELM327, test \"\"adapter\"\"\"\n") != NULL);
     CHECK(strstr(output.data,
-                 "sequence,timestamp_ms,pid,name,value,unit,favourite\n") != NULL);
+                 "sequence,timestamp_ms,pid,name,value,unit\n") != NULL);
     CHECK(strstr(output.data, ",0x0C,\"Engine RPM\",") != NULL);
     CHECK(strstr(output.data, "# diagnostic_transcript\n") != NULL);
     CHECK(strstr(output.data,
@@ -247,11 +244,11 @@ static int test_telemetry(void)
     CHECK(jaglink_telemetry_recorder_begin(
               &recorder, &metadata, text_sink, &stream));
     CHECK(jaglink_telemetry_recorder_record_sample(
-              &recorder, &latest, true));
+              &recorder, &latest));
     CHECK(jaglink_telemetry_recorder_record_response(
               &recorder, 2000U, "010C", &response));
     CHECK(jaglink_telemetry_recorder_finish(&recorder, 9000U));
-    CHECK(strstr(stream.data, "# jaglink_session_stream_version,2\n") != NULL);
+    CHECK(strstr(stream.data, "# jaglink_session_stream_version,3\n") != NULL);
     {
         char expected_link_version[96];
         const char *first_link_version;
@@ -275,7 +272,7 @@ static int test_telemetry(void)
         CHECK(strstr(stream.data, expected_profile) != NULL);
     }
     CHECK(strstr(stream.data,
-                 "record_type,sequence,timestamp_ms,pid,name,value,unit,favourite,responder_can_id,responder_extended,command,result,response\n") != NULL);
+                 "record_type,sequence,timestamp_ms,pid,name,value,unit,responder_can_id,responder_extended,command,result,response\n") != NULL);
     CHECK(strstr(stream.data, "sample,") != NULL);
     CHECK(strstr(stream.data, "transcript,,2000,") != NULL);
     CHECK(strstr(stream.data, "# session_ended_epoch_ms,9000\n") != NULL);
@@ -286,10 +283,10 @@ static int test_telemetry(void)
               &recorder, 3000U, "ATI", &response));
     CHECK(jaglink_telemetry_recorder_finish(&recorder, 10000U));
     const char *stream_header = strstr(
-        stream.data, "# jaglink_session_stream_version,2\n");
+        stream.data, "# jaglink_session_stream_version,3\n");
     CHECK(stream_header != NULL);
     CHECK(strstr(stream_header + 1,
-                 "# jaglink_session_stream_version,2\n") == NULL);
+                 "# jaglink_session_stream_version,3\n") == NULL);
 
     FailingTextBuffer failing = { .fail_on_write = SIZE_MAX };
     jaglink_telemetry_recorder_init(&recorder);
@@ -297,7 +294,7 @@ static int test_telemetry(void)
               &recorder, &metadata, failing_text_sink, &failing));
     failing.fail_on_write = failing.writes + 1U;
     CHECK(!jaglink_telemetry_recorder_record_sample(
-              &recorder, &latest, true));
+              &recorder, &latest));
     CHECK(recorder.failed);
     CHECK(!jaglink_telemetry_recorder_record_response(
               &recorder, 2000U, "010C", &response));

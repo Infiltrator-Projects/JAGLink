@@ -33,8 +33,7 @@ bool jaglink_telemetry_recorder_continue(
 
 bool jaglink_telemetry_recorder_record_sample(
     JaglinkTelemetryRecorder *recorder,
-    const JaglinkTelemetrySample *sample,
-    bool favourite)
+    const JaglinkTelemetrySample *sample)
 {
     if (sample == NULL) {
         return false;
@@ -42,7 +41,6 @@ bool jaglink_telemetry_recorder_record_sample(
     return link_telemetry_recorder_record_sample_named(
         recorder,
         sample,
-        favourite,
         jaglink_obd2_pid_name(sample->measurement.pid),
         jaglink_obd2_unit_name((JaglinkObd2Unit)sample->measurement.unit));
 }

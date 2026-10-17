@@ -30,8 +30,6 @@ typedef LinkTelemetryRecorder JaglinkTelemetryRecorder;
 #define jaglink_telemetry_store_history_count link_telemetry_store_history_count
 #define jaglink_telemetry_store_total_sample_count link_telemetry_store_total_sample_count
 #define jaglink_telemetry_store_history_at link_telemetry_store_history_at
-#define jaglink_telemetry_store_set_favourite link_telemetry_store_set_favourite
-#define jaglink_telemetry_store_is_favourite link_telemetry_store_is_favourite
 #define jaglink_telemetry_store_transcript_count link_telemetry_store_transcript_count
 #define jaglink_telemetry_store_transcript_at link_telemetry_store_transcript_at
 #define jaglink_telemetry_session_metadata_init link_telemetry_session_metadata_init
@@ -45,7 +43,7 @@ bool jaglink_telemetry_store_record(JaglinkTelemetryStore *store, uint64_t times
 bool jaglink_telemetry_store_record_transcript(JaglinkTelemetryStore *store, uint64_t timestamp_ms, const char *command, const JaglinkElm327Response *response);
 bool jaglink_telemetry_recorder_begin(JaglinkTelemetryRecorder *recorder, const JaglinkTelemetrySessionMetadata *metadata, JaglinkTelemetryTextSink sink, void *context);
 bool jaglink_telemetry_recorder_continue(JaglinkTelemetryRecorder *recorder, const JaglinkTelemetrySessionMetadata *metadata, JaglinkTelemetryTextSink sink, void *context);
-bool jaglink_telemetry_recorder_record_sample(JaglinkTelemetryRecorder *recorder, const JaglinkTelemetrySample *sample, bool favourite);
+bool jaglink_telemetry_recorder_record_sample(JaglinkTelemetryRecorder *recorder, const JaglinkTelemetrySample *sample);
 bool jaglink_telemetry_recorder_record_response(JaglinkTelemetryRecorder *recorder, uint64_t timestamp_ms, const char *command, const JaglinkElm327Response *response);
 bool jaglink_telemetry_export_csv(const JaglinkTelemetryStore *store, const JaglinkTelemetrySessionMetadata *metadata, JaglinkTelemetryTextSink sink, void *context);
 
