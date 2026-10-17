@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.91 — 2026-10-17
+
+- Advance JAGLink from Link 0.15.77 to released Link 0.15.96 at `0997d295716c01c16f7b47a6c01c732c96693efb`.
+- Retain the canonical Libraries pin at `fc2c72cb038a8e4c1e0bc62145adf533fbfd7923`, matching Link 0.15.96's nested dependency identity.
+- Requalify the Jaguar product shells against the current shared Link baseline without changing Jaguar-specific diagnostic policy.
+
 ## 0.2.88 — 2026-10-16
 
 - Qualify Windows x86 startup on a clean x64 runner.
