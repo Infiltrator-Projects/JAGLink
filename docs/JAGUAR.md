@@ -6,7 +6,7 @@ JAGLink's first manufacturer target is the Jaguar X-Type, platform code X400, co
 
 ## Shared Apple session architecture
 
-The iPhone face no longer owns a separate copy of the ELM327/diagnostic-session engine. Link owns CoreBluetooth session lifecycle, ELM command scheduling, standard VIN/PID/DTC flow, telemetry history/favourites, CSV recording, simulation and prompt-safe recovery after an interrupted manufacturer extension. JAGLink's Apple controller is now a thin product adapter that keeps only Jaguar VIN interpretation and Jaguar-facing presentation.
+The iPhone face no longer owns a separate copy of the ELM327/diagnostic-session engine. Link owns CoreBluetooth session lifecycle, ELM command scheduling, standard VIN/PID/DTC flow, telemetry history and per-PID polling state, CSV recording, simulation and prompt-safe recovery after an interrupted manufacturer extension. JAGLink's Apple controller is now a thin product adapter that keeps only Jaguar VIN interpretation and Jaguar-facing presentation.
 
 JAGLink pins the exact Link revision at `src/link`; documentation does not maintain a second hard-coded Link version number that can drift from that gitlink.
 

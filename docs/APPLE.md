@@ -8,7 +8,7 @@ The JAGLink iPhone project is `app/ios/JAGLink.xcodeproj`.
 
 Link owns the shared CoreBluetooth byte-stream provider and the product-neutral diagnostic-flow controller. JAGLink's `JagLinkBLETransport` source is a compatibility compilation shim over Link's `LinkBLETransport`; it is not a second Bluetooth implementation. `JagLinkDiagnosticsController` owns the Jaguar/X400 presentation edge and VIN-derived Jaguar identity while delegating ELM327 framing, standard OBD-II capability discovery, stored/pending/permanent DTC reads and live-data scheduling to Link.
 
-The SwiftUI application exposes the X400 network profile, generic faults, live OBD-II parameters, favourites and diagnostic CSV export. Manual reconnect attempts append to one in-memory evidence stream for the controller lifetime, and a discovered VIN is written into the current session header before export. Jaguar manufacturer-specific module requests remain evidence-gated and are not enabled merely to match Mercedes feature depth.
+The SwiftUI application exposes the X400 network profile, generic faults, live OBD-II parameters, per-PID polling selection and diagnostic CSV export. Manual reconnect attempts append to one in-memory evidence stream for the controller lifetime, and a discovered VIN is written into the current session header before export. Jaguar manufacturer-specific module requests remain evidence-gated and are not enabled merely to match Mercedes feature depth.
 
 ## Build
 

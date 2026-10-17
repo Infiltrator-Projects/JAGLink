@@ -4,7 +4,8 @@
 
 - Advance JAGLink from Link 0.15.77 to released Link 0.15.96 at `0997d295716c01c16f7b47a6c01c732c96693efb`.
 - Retain the canonical Libraries pin at `fc2c72cb038a8e4c1e0bc62145adf533fbfd7923`, matching Link 0.15.96's nested dependency identity.
-- Requalify the Jaguar product shells against the current shared Link baseline without changing Jaguar-specific diagnostic policy.
+- Align JAGLink with Link's current single per-PID polling-selection model by removing the retired favourites state from the portable wrappers, tests and iOS table.
+- Adopt the current Link telemetry contracts: exported CSV schema 2 and session-stream schema 3, without changing Jaguar-specific diagnostic permissions or evidence policy.
 
 ## 0.2.88 — 2026-10-16
 
@@ -66,8 +67,6 @@
 This file records user-visible, compatibility, diagnostic-knowledge and validation changes for JAGLink.
 
 ## Unreleased
-
-- Advance the exact Link dependency to released Link 0.15.32, which carries Libraries 1.19.10 and the latest shared transport, evidence, selection and presentation contracts without changing this product's manufacturer-specific branding or icon identity.
 
 - Canonical documentation baseline aligned with the Infiltrator project family.
 
