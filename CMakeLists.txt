@@ -128,6 +128,9 @@ if(JAGLINK_BUILD_LINUX_APP)
     set_target_properties(jaglink-linux PROPERTIES OUTPUT_NAME jaglink)
     target_link_libraries(jaglink-linux PRIVATE jaglink PkgConfig::GTK4)
     link_enable_linux_gtk_shell(jaglink-linux UDEV_RULE_NAME "60-jaglink-openport2.rules")
+    # BlueZ headers use GNU extensions; keep strict diagnostics on our code,
+    # but treat the installed vendor headers as system headers.
+    target_include_directories(jaglink-linux SYSTEM PRIVATE "${LINK_BLUEZ_INCLUDE_DIR}")
     if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
         target_compile_options(jaglink-linux PRIVATE ${JAGLINK_WARNING_FLAGS} -Werror)
     endif()
