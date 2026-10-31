@@ -65,7 +65,17 @@ run_as_root()
 }
 
 if [[ ${#need[@]} -ne 0 ]]; then
-  if command -v apt-get >/dev/null 2>&1; then
+  if [[ $do_install -eq 0 ]]; then
+    # A build-only invocation must never mutate the host or require sudo.
+    # CMake validates GTK4, BlueZ and libusb against installed or caller-
+    # supplied rootless development paths (including CMAKE_* and pkg-config).
+    for cmd in cmake cpack cc pkg-config tar dpkg dpkg-deb dpkg-query; do
+      command -v "$cmd" >/dev/null 2>&1 || {
+        echo "Build-only mode requires $cmd; install prerequisites outside this command." >&2
+        exit 3
+      }
+    done
+  elif command -v apt-get >/dev/null 2>&1; then
     echo "Installing native build dependencies: build-essential cmake dpkg-dev pkg-config libgtk-4-dev libbluetooth-dev libusb-1.0-0-dev"
     run_as_root apt-get update
     run_as_root apt-get install -y build-essential cmake dpkg-dev pkg-config libgtk-4-dev libbluetooth-dev libusb-1.0-0-dev
