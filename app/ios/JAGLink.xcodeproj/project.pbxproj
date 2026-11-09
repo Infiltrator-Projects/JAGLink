@@ -21,7 +21,7 @@
 		A00000000000000000000013 /* ../../src/core/scheduler.c in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000013 /* ../../src/core/scheduler.c */; };
 		A00000000000000000000014 /* ../../src/core/telemetry_store.c in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000014 /* ../../src/core/telemetry_store.c */; };
 		A00000000000000000000015 /* ../../src/core/telemetry_csv.c in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000015 /* ../../src/core/telemetry_csv.c */; };
-		A00000000000000000000017 /* ../../src/uds/uds.c in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000017 /* ../../src/uds/uds.c */; };
+		A00000000000000000000017 /* ../../src/link/platform/apple/LinkPortableUds.c in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000017 /* ../../src/link/platform/apple/LinkPortableUds.c */; };
 		A00000000000000000000018 /* ../../src/elm327/elm327.c in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000018 /* ../../src/elm327/elm327.c */; };
 		A00000000000000000000019 /* ../../src/elm327/can.c in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000019 /* ../../src/elm327/can.c */; };
 		A00000000000000000000020 /* ../../src/elm327/session.c in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000020 /* ../../src/elm327/session.c */; };
@@ -69,7 +69,7 @@
 		B00000000000000000000013 /* ../../src/core/scheduler.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ../../src/core/scheduler.c; sourceTree = SOURCE_ROOT; };
 		B00000000000000000000014 /* ../../src/core/telemetry_store.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ../../src/core/telemetry_store.c; sourceTree = SOURCE_ROOT; };
 		B00000000000000000000015 /* ../../src/core/telemetry_csv.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ../../src/core/telemetry_csv.c; sourceTree = SOURCE_ROOT; };
-		B00000000000000000000017 /* ../../src/uds/uds.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ../../src/uds/uds.c; sourceTree = SOURCE_ROOT; };
+		B00000000000000000000017 /* ../../src/link/platform/apple/LinkPortableUds.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ../../src/link/platform/apple/LinkPortableUds.c; sourceTree = SOURCE_ROOT; };
 		B00000000000000000000018 /* ../../src/elm327/elm327.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ../../src/elm327/elm327.c; sourceTree = SOURCE_ROOT; };
 		B00000000000000000000019 /* ../../src/elm327/can.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ../../src/elm327/can.c; sourceTree = SOURCE_ROOT; };
 		B00000000000000000000020 /* ../../src/elm327/session.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ../../src/elm327/session.c; sourceTree = SOURCE_ROOT; };
@@ -158,7 +158,7 @@
 				B00000000000000000000013 /* ../../src/core/scheduler.c */,
 				B00000000000000000000014 /* ../../src/core/telemetry_store.c */,
 				B00000000000000000000015 /* ../../src/core/telemetry_csv.c */,
-				B00000000000000000000017 /* ../../src/uds/uds.c */,
+				B00000000000000000000017 /* ../../src/link/platform/apple/LinkPortableUds.c */,
 				B00000000000000000000018 /* ../../src/elm327/elm327.c */,
 				B00000000000000000000019 /* ../../src/elm327/can.c */,
 				B00000000000000000000020 /* ../../src/elm327/session.c */,
@@ -340,7 +340,7 @@
 				A00000000000000000000013 /* ../../src/core/scheduler.c in Sources */,
 				A00000000000000000000014 /* ../../src/core/telemetry_store.c in Sources */,
 				A00000000000000000000015 /* ../../src/core/telemetry_csv.c in Sources */,
-				A00000000000000000000017 /* ../../src/uds/uds.c in Sources */,
+				A00000000000000000000017 /* ../../src/link/platform/apple/LinkPortableUds.c in Sources */,
 				A00000000000000000000018 /* ../../src/elm327/elm327.c in Sources */,
 				A00000000000000000000019 /* ../../src/elm327/can.c in Sources */,
 				A00000000000000000000020 /* ../../src/elm327/session.c in Sources */,
