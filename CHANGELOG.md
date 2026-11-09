@@ -4,6 +4,7 @@
 
 - Preserve caller-owned output files when generating the Linux native `.run` installer. The generator no longer recursively deletes an unrelated `_CPack_Packages` directory under its output path.
 - Qualify the protection with a sentinel in the Linux packaging workflow; diagnostics, transport logic and vehicle policy are unchanged.
+- Publish the already-qualified artifacts on an Ubuntu-hosted runner so the release job has the required GitHub CLI instead of relying on a particular self-hosted runner installation.
 
 ## 0.2.91 — 2026-10-17
 
