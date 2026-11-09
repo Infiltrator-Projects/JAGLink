@@ -153,5 +153,4 @@ __JAGLINK_ARCHIVE_BELOW__
 STUB
 cat "$work/source.tar.gz" >> "$out_dir/$name"
 chmod +x "$out_dir/$name"
-rm -rf "$out_dir/_CPack_Packages"
 printf '%s\n' "$out_dir/$name"

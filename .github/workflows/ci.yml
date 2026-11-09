@@ -279,7 +279,13 @@ jobs:
           dpkg-deb -c "$deb_src" | grep -F './usr/share/doc/jaglink/copyright' >/dev/null
           dpkg-deb -f "$deb_src" Depends | grep -E '(^|, )libusb-1\.0-0([ (]|,|$)' >/dev/null
           install -m 0644 "$deb_src" "$RUNNER_TEMP/release/JAGLink-${VERSION}-linux-amd64.deb"
+          # The output directory belongs to the caller, not the .run packager.
+          mkdir -p "$RUNNER_TEMP/release/_CPack_Packages"
+          printf 'caller-owned\n' > "$RUNNER_TEMP/release/_CPack_Packages/sentinel"
           bash scripts/build-linux-run.sh "$RUNNER_TEMP/release"
+          test "$(cat "$RUNNER_TEMP/release/_CPack_Packages/sentinel")" = caller-owned
+          rm "$RUNNER_TEMP/release/_CPack_Packages/sentinel"
+          rmdir "$RUNNER_TEMP/release/_CPack_Packages"
           "$RUNNER_TEMP/release/JAGLink-${VERSION}-linux-native.run" --help >/dev/null
           native_deb="$RUNNER_TEMP/jaglink_${VERSION}+native1_amd64.deb"
           "$RUNNER_TEMP/release/JAGLink-${VERSION}-linux-native.run" --build-only --output "$native_deb"

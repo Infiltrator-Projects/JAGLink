@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.92 — 2026-11-09
+
+- Preserve caller-owned output files when generating the Linux native `.run` installer. The generator no longer recursively deletes an unrelated `_CPack_Packages` directory under its output path.
+- Qualify the protection with a sentinel in the Linux packaging workflow; diagnostics, transport logic and vehicle policy are unchanged.
+
 ## 0.2.91 — 2026-10-17
 
 - Advance JAGLink from Link 0.15.77 to released Link 0.15.96 at `0997d295716c01c16f7b47a6c01c732c96693efb`.
